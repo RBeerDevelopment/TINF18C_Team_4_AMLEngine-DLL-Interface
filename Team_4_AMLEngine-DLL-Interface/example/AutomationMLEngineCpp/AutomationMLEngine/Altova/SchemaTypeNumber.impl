@@ -1,0 +1,194 @@
+// -*- C++ -*-
+
+// This code is used to
+// - avoid multiple symbol definitions during linking on with GNU C++ Compiler
+// - have all symbols known for Visual C++ Linker
+// Solution to this porblem is to have the definitions only once for GNU, so
+// the template specialisations need to be defined in a cpp file. For VC++
+// it is neccessary to have the definitions in the header file, otherwise there
+// will be undefined symbols during linking.
+
+#ifndef _SCHEMATYPENUMBER_IMPL_CODE_DECLARATION_
+#define _SCHEMATYPENUMBER_IMPL_CODE_DECLARATION_
+
+// First: this section declares the specialised template function for GNU
+#ifdef __GNUC__
+//#error declaration
+template<>
+float CSchemaUnsignedLong::ToFloat() const;
+
+template<>
+double CSchemaUnsignedLong::ToDouble() const;
+
+template<>
+void CSchemaInt::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaUnsignedInt::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaLong::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaUnsignedLong::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaFloat::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaDouble::InternalNumParse(const TCHAR* szValue);
+
+template<>
+void CSchemaDecimal::InternalNumParse(const TCHAR* szValue);
+
+template<>
+CSchemaDecimal::operator   tstring() const;
+
+#endif // __GNUC__
+
+#endif // _SCHEMATYPENUMBER_H_CODE_DECLARATION_
+
+// ------------------------------------------------------------------------
+
+#ifndef _SCHEMANUMBERTYPE_IMPL_CODE_DEFINITION_
+
+// Second: this part will be compiled if the file is included in the header
+// on VC++ of if it is included in cpp file (__SCHEMATYPENUMBER_IMPL_CODE__
+// is defined) on GNU
+#if defined(_MSC_VER) || ( defined(__GNUC__) && defined(__SCHEMATYPENUMBER_IMPL_CODE__) )
+
+#define _SCHEMANUMBERTYPE_IMPL_CODE_DEFINITION_
+
+template<> float CSchemaUnsignedLong::ToFloat() const
+{
+    return IsEmpty() ? (float)0.0   : ICMapforceMachineUtil::InRangeDbl<float>((float)ICMapforceMachineUtil::InRangeInt<__int64>(m_Value, _I64_MIN, _I64_MAX), 3.4E-38, 3.4E+38);
+}
+
+template<> double CSchemaUnsignedLong::ToDouble() const
+{
+    return IsEmpty() ? (double)0.0  : ICMapforceMachineUtil::InRangeDbl<double>((double)ICMapforceMachineUtil::InRangeInt<__int64>(m_Value, _I64_MIN, _I64_MAX), 1.7E-308, 1.7E+308);
+}
+
+
+template<> void CSchemaInt::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    errno = 0;
+    m_Value = _tcstol(szValue, &endptr, 10);
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaUnsignedInt::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    errno = 0;
+    m_Value = _tcstoul(szValue, &endptr, 10);
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaLong::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    _tcstol(szValue, &endptr, 10);
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+
+    errno = 0;
+    m_Value = _ttoi64( szValue );
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaUnsignedLong::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    _tcstoul(szValue, &endptr, 10);
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+
+    errno = 0;
+    m_Value = _ttoi64( szValue );
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaFloat::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    errno = 0;
+    m_Value = (float)_tcstod(szValue, &endptr);
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaDouble::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    errno = 0;
+    m_Value = _tcstod(szValue, &endptr);
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+}
+
+template<> void CSchemaDecimal::InternalNumParse(const TCHAR* szValue)
+{
+    TCHAR* endptr;
+    errno = 0;
+    m_Value = _tcstod(szValue, &endptr);
+    if (errno == ERANGE)
+        ThrowValuesNotConvertableError();
+    if (_tcslen (endptr))
+        for (;*endptr;++endptr)
+            if (!_istspace(*endptr))
+                ThrowValuesNotConvertableError();
+}
+
+template<> CSchemaDecimal::operator    tstring() const
+{
+    if( IsEmpty() )
+        return _T("");
+
+    int nPrecision = 15;
+    if ( m_Value != 0.0 )
+{
+        //2^52 - 52 bits for mantissa
+        //nPrecision = log10(4503599627370496) - log10(fabs(nNumber)) ;
+        // seems so that MS rounds earlier so lets go for 51 bits 2^51 - 1
+        nPrecision = int( log10(2251799813685247.0) - log10(fabs(m_Value)) );
+}
+
+    if( nPrecision< 0 )
+        nPrecision = 0;
+
+    TCHAR szValue[48];
+    _sntprintf( szValue, 48, _T("%.*lf"), nPrecision, m_Value );
+    szValue[47] = 0;
+
+    CSchemaTypeNumber::TruncTrailingZeros( &szValue[ 0 ] );
+    return szValue;
+}
+#endif
+
+#endif // _SCHEMATYPENUMBER_IMPL_CODE_DEFINITION_

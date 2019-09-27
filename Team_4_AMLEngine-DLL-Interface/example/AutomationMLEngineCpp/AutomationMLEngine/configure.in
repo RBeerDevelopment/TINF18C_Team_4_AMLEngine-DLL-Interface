@@ -1,0 +1,11 @@
+AC_INIT(configure.in)
+
+AM_CONFIG_HEADER(config.h)
+AM_INIT_AUTOMAKE(automationmlengine, 0.1)
+
+AC_LANG_CPLUSPLUS
+AC_PROG_CXX
+AM_PROG_LIBTOOL
+
+AC_OUTPUT(Altova/Makefile AltovaXML/Makefile CAEX_ClassModel/Makefile \
+	CAEX_ClassModelTest/Makefile Makefile)
