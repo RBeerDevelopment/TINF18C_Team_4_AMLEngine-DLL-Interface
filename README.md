@@ -2,10 +2,7 @@
 
 
 ## (TINF18C, SWE I Praxisprojekt 2019/2020) 
-
-## Project: AMLEngine-DLL Interfaces
  
-
  
 ## Customer: 
              Rentschler & Ewertz
