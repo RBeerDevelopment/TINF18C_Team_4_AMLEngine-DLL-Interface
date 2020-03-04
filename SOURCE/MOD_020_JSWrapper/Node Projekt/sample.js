@@ -1,12 +1,37 @@
-var edge = require('edge');
+var edge = require('edge-js');
 
-var hello = edge.func(function () {/*
-    async (input) => { 
-        return ".NET welcomes " + input.ToString(); 
-    }
-*/});
+var add7 = edge.func({
+    source: function () {/*
+ 
+        using Aml.Engine;
+        using Aml.Engine.CAEX;
+        using System.Data;
+        using System.Threading.Tasks;
+        using System;
+ 
 
-hello('Node.js', function (error, result) {
-    if (error) throw error;
-    console.log(result);
+        public class Startup
+        {
+            public async Task<object> Invoke(object input)
+            {
+                Action<object> action = (object obj) =>
+                                {
+                                   Console.WriteLine("NANNAN",Task.CurrentId, obj);
+                                };
+                Task t = new Task(action, "alpha");
+
+                //var caexDocument = CAEXDocument.LoadFromFile("C:/DHBW/UniDevelopment/Semester 3/SWE/src/BeispielDateien/AutomationMLBaseRoleClassLib.aml");
+                var caexDocument = CAEXDocument.New_CAEXDocument();
+                caexDocument.SaveToFile("build/myfile.aml", true);
+
+                Console.WriteLine("test32");
+                t.Start();
+                return t;
+            }
+        }
+    */
+    },
+    references: ['dlls/AML.Engine.dll', 'System.Data.dll']
 });
+
+console.log(add7("test",true))

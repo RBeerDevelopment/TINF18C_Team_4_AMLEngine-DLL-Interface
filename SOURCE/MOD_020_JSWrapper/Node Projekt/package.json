@@ -9,6 +9,6 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "edge": "^7.10.1"
+    "edge-js": "^13.0.1"
   }
 }
