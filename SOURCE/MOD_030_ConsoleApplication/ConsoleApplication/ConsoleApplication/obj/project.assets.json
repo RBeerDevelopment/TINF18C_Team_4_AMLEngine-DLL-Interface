@@ -1,0 +1,152 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Aml.Engine/1.3.6": {
+        "type": "package",
+        "dependencies": {
+          "System.IO.Packaging": "4.5.0"
+        },
+        "compile": {
+          "lib/netcoreapp2.2/AML.Engine.Services.dll": {},
+          "lib/netcoreapp2.2/AML.Engine.dll": {},
+          "lib/netcoreapp2.2/treelib.dll": {}
+        },
+        "runtime": {
+          "lib/netcoreapp2.2/AML.Engine.Services.dll": {},
+          "lib/netcoreapp2.2/AML.Engine.dll": {},
+          "lib/netcoreapp2.2/treelib.dll": {}
+        }
+      },
+      "System.IO.Packaging/4.5.0": {
+        "type": "package",
+        "compile": {
+          "ref/netstandard2.0/System.IO.Packaging.dll": {}
+        },
+        "runtime": {
+          "lib/netstandard2.0/System.IO.Packaging.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Aml.Engine/1.3.6": {
+      "sha512": "ym56eYxmZ/CkAdGS676LSXmhzle4UM4rwS8GXBBwzH69rdyUs23PtTJeQUHcsc1WqIuEkTbl454m/epp5seVpw==",
+      "type": "package",
+      "path": "aml.engine/1.3.6",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "aml.engine.1.3.6.nupkg.sha512",
+        "aml.engine.nuspec",
+        "icon.png",
+        "lib/net4.6/AML.Engine.Services.dll",
+        "lib/net4.6/AML.Engine.dll",
+        "lib/net4.6/treelib.dll",
+        "lib/net4.7/AML.Engine.Services.dll",
+        "lib/net4.7/AML.Engine.dll",
+        "lib/net4.7/treelib.dll",
+        "lib/netcoreapp2.2/AML.Engine.Services.dll",
+        "lib/netcoreapp2.2/AML.Engine.dll",
+        "lib/netcoreapp2.2/treelib.dll",
+        "lib/netstandard2.0/AML.Engine.Services.dll",
+        "lib/netstandard2.0/AML.Engine.dll",
+        "lib/netstandard2.0/treelib.dll"
+      ]
+    },
+    "System.IO.Packaging/4.5.0": {
+      "sha512": "OjtW5pGp1E7KE3ontBrzy+nSFJCM6pcbVDdo3gg4DauTfdtZKdeKvMVlADF4fSY+OfXWUp4qCvOSxIltt37LbA==",
+      "type": "package",
+      "path": "system.io.packaging/4.5.0",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.TXT",
+        "THIRD-PARTY-NOTICES.TXT",
+        "lib/net46/System.IO.Packaging.dll",
+        "lib/netstandard1.3/System.IO.Packaging.dll",
+        "lib/netstandard2.0/System.IO.Packaging.dll",
+        "ref/net46/System.IO.Packaging.dll",
+        "ref/net46/System.IO.Packaging.xml",
+        "ref/netstandard1.3/System.IO.Packaging.dll",
+        "ref/netstandard1.3/System.IO.Packaging.xml",
+        "ref/netstandard2.0/System.IO.Packaging.dll",
+        "ref/netstandard2.0/System.IO.Packaging.xml",
+        "system.io.packaging.4.5.0.nupkg.sha512",
+        "system.io.packaging.nuspec",
+        "useSharedDesignerContext.txt",
+        "version.txt"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETCoreApp,Version=v3.1": [
+      "Aml.Engine >= 1.3.6"
+    ]
+  },
+  "packageFolders": {
+    "C:\\Users\\lkrauter\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "C:\\DHBW\\Theorie\\Semester 3\\SWE\\GIT\\AMLEngine-DLL-Interfaces\\SOURCE\\MOD_030_ConsoleApplication\\ConsoleApplication\\ConsoleApplication\\ConsoleApplication.csproj",
+      "projectName": "ConsoleApplication",
+      "projectPath": "C:\\DHBW\\Theorie\\Semester 3\\SWE\\GIT\\AMLEngine-DLL-Interfaces\\SOURCE\\MOD_030_ConsoleApplication\\ConsoleApplication\\ConsoleApplication\\ConsoleApplication.csproj",
+      "packagesPath": "C:\\Users\\lkrauter\\.nuget\\packages\\",
+      "outputPath": "C:\\DHBW\\Theorie\\Semester 3\\SWE\\GIT\\AMLEngine-DLL-Interfaces\\SOURCE\\MOD_030_ConsoleApplication\\ConsoleApplication\\ConsoleApplication\\obj\\",
+      "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+      ],
+      "configFilePaths": [
+        "C:\\Users\\lkrauter\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+      ],
+      "originalTargetFrameworks": [
+        "netcoreapp3.1"
+      ],
+      "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "netcoreapp3.1": {
+          "projectReferences": {}
+        }
+      },
+      "warningProperties": {
+        "warnAsError": [
+          "NU1605"
+        ]
+      }
+    },
+    "frameworks": {
+      "netcoreapp3.1": {
+        "dependencies": {
+          "Aml.Engine": {
+            "target": "Package",
+            "version": "[1.3.6, )"
+          }
+        },
+        "imports": [
+          "net461",
+          "net462",
+          "net47",
+          "net471",
+          "net472",
+          "net48"
+        ],
+        "assetTargetFallback": true,
+        "warn": true,
+        "frameworkReferences": {
+          "Microsoft.NETCore.App": {
+            "privateAssets": "all"
+          }
+        },
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
+      }
+    }
+  }
+}
