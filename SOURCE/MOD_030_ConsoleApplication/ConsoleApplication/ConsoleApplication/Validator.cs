@@ -6,5 +6,6 @@ namespace ConsoleApplication
 {
     class Validator
     {
+
     }
 }

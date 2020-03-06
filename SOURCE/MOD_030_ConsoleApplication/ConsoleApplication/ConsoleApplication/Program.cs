@@ -6,7 +6,8 @@ namespace ConsoleApplication
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            string path;
+            string outPath;
         }
     }
 }
