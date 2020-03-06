@@ -2,6 +2,7 @@
 
 ## Node Projekt
 **/node_modules
+!SOURCE/MOD_020_JSWrapper/Node Projekt/dlls/AML.Engine.dll
 
 ## Console Applikation
 **/.vs
