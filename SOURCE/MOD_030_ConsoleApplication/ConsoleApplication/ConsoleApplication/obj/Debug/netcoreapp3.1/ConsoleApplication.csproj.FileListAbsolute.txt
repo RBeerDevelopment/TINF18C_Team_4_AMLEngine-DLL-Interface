@@ -1,4 +1,0 @@
-C:\DHBW\Theorie\Semester 3\SWE\GIT\AMLEngine-DLL-Interfaces\SOURCE\MOD_030_ConsoleApplication\ConsoleApplication\ConsoleApplication\bin\Debug\netcoreapp3.1\ConsoleApplication.exe
-C:\DHBW\Theorie\Semester 3\SWE\GIT\AMLEngine-DLL-Interfaces\SOURCE\MOD_030_ConsoleApplication\ConsoleApplication\ConsoleApplication\obj\Debug\netcoreapp3.1\ConsoleApplication.csprojAssemblyReference.cache
-C:\DHBW\Theorie\Semester 3\SWE\GIT\AMLEngine-DLL-Interfaces\SOURCE\MOD_030_ConsoleApplication\ConsoleApplication\ConsoleApplication\obj\Debug\netcoreapp3.1\ConsoleApplication.AssemblyInfoInputs.cache
-C:\DHBW\Theorie\Semester 3\SWE\GIT\AMLEngine-DLL-Interfaces\SOURCE\MOD_030_ConsoleApplication\ConsoleApplication\ConsoleApplication\obj\Debug\netcoreapp3.1\ConsoleApplication.AssemblyInfo.cs

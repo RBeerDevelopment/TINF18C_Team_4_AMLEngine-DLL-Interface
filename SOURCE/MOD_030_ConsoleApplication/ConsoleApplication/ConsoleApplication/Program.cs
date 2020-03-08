@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Aml.Engine.CAEX;
+using System;
 
 namespace ConsoleApplication
 {
@@ -8,6 +9,21 @@ namespace ConsoleApplication
         {
             string path;
             string outPath;
+            CAEXObject doc;
+
+            /*
+             > manage console here?
+             */
+        }
+
+        public static CAEXObject LoadFile(string path)
+        {
+            /*
+             Loads file
+             */
+            throw new NotImplementedException("DO IT");
+
+            return null;
         }
     }
 }
