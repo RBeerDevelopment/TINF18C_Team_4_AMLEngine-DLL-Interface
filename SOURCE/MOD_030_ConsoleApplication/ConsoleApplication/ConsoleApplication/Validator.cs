@@ -5,8 +5,13 @@ using System.Text;
 
 namespace ConsoleApplication
 {
-    class Validator
+    public class Validator
     {
+        public Validator(int logLevel)
+        {
+            this.LogLevel = logLevel;
+        }
+
         // ???
         public int LogLevel { get; set; }
 
