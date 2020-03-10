@@ -44,9 +44,10 @@ namespace ConsoleApplication
 
         static void Main(string[] args)
         {
-            string path;
+            string path = "C:/DHBW/Theorie/Semester 3/SWE/src/BeispielDateien/Rumpf1.aml";
             string outPath;
             CAEXObject doc;
+
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);
@@ -68,7 +69,7 @@ namespace ConsoleApplication
                     case "1":
                         //validate file
 
-                        validator.validate(LoadFile());
+                        validator.validate(LoadFile(path));
                         break;
 
                     case "2":
@@ -115,7 +116,7 @@ namespace ConsoleApplication
             throw new NotImplementedException("@joshua sleep");
         }
 
-        public static CAEXObject LoadFile()
+        public static CAEXDocument LoadFile(string path)
         {
             /*
              Loads file
@@ -124,6 +125,8 @@ namespace ConsoleApplication
             //read file
             // look up input is actual file
             // load file
+            
+            return CAEXDocument.LoadFromFile(path);  
 
             throw new NotImplementedException("DO IT");
 
