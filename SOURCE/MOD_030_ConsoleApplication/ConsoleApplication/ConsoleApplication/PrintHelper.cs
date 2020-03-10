@@ -24,18 +24,27 @@ namespace ConsoleApplication
         public static void loopExplanation()
         {
             // entscheide
-
-            Console.WriteLine("you have to choose ");
-            Console.WriteLine("1 => Validate");
-            Console.WriteLine("2 => De / compress");
-            Console.WriteLine("3 => Exit programm");
+            Console.Clear();
+            Console.WriteLine("What do you want to do?");
+            Console.WriteLine("Type \"Validate\" to Validate an AML-File");
+            Console.WriteLine("Type \"Compress\" or \"Decompress\" to Compress or Decompress an existing AMLX-File");
+            Console.WriteLine("Type \"Quit\" or \"Exit\" to exit the Program");
         }
 
-        public static void DeCompressor_Choosage()
+        public static void DeCompressor_Choosage(bool Compress = true)
         {
-            Console.WriteLine("you have to choose ");
-            Console.WriteLine("1 => Compress");
-            Console.WriteLine("2 => De / compress");
+            Console.Clear();
+            if (Compress)
+                Console.WriteLine("Compress a Folder to an AMLX-File\n");
+            else
+                Console.WriteLine("De-Compress an AMLX-File to a Folder\n");
+        }
+
+        public static void PrepareConsoleForNewInput()
+        {
+            Console.SetCursorPosition(0, Console.CursorTop - 1);
+            Console.WriteLine("                                                                                                                                                        ");
+            Console.SetCursorPosition(0, Console.CursorTop - 2);
         }
     }
 }
