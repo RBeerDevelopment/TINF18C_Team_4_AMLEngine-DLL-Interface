@@ -1,5 +1,6 @@
 ﻿using Aml.Engine.CAEX;
 using System;
+using System.IO;
 
 /**
  * Ablauf Diagramme:
@@ -38,19 +39,17 @@ using System;
 
 namespace ConsoleApplication
 {
-    class Program
+    public class Program
     {
-
-
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
-            string path;
+            string path = @"D:\Dokumente\Studium\Software-Engineering\BeispielDateien\Rumpf1.aml";
             string outPath;
             CAEXObject doc;
 
+
             // Contstructor with loglevel
             Validator validator = new Validator(1);
-            DeCompressor deCompressor = new DeCompressor();
 
 
             PrintHelper.welcome();
@@ -63,46 +62,29 @@ namespace ConsoleApplication
 
 
                 // TODO: Improve choose options
-                switch (Console.ReadLine())
+                switch (Console.ReadLine().ToUpper())
                 {
-                    case "1":
+                    case "VALIDATE":
                         //validate file
-
-                        validator.validate(LoadFile());
+                        CAEXDocument CDokument = LoadFile(path);
+                        if ( CDokument != null)
+                            validator.validate(CDokument);
                         break;
 
-                    case "2":
-                        //  DE / Compressor
-
-                        PrintHelper.DeCompressor_Choosage();
-
-                        var src = Console.ReadLine();
-                        var target = Console.ReadLine();
-
-                        switch (Console.ReadLine())
-                        {
-                            case "1":
-                                // Compress
-                                deCompressor.Compress(src, target);
-                                break;
-                            case "2":
-                                //decompress
-                                deCompressor.DeCompress(src, target);
-                                break;
-
-                            default:
-                                Console.WriteLine("Error, no case found");
-                                break;
-                        }
-
+                    case "COMPRESS":
+                        AMLXCompress(true);
                         break;
-                    case "3":
+                    case "DE-COMPRESS":
+                        AMLXCompress(false);
+                        break;
+                    case "EXIT":
+                    case "QUIT":
                         loop = false;
                         break;
 
 
                     default:
-                        Console.WriteLine("Cannot Use Input \n");
+                        Console.WriteLine("Invalid Input \n");
                         continue;
                 }
 
@@ -110,24 +92,57 @@ namespace ConsoleApplication
 
             PrintHelper.exit();
 
-
-            // 
-            throw new NotImplementedException("@joshua sleep");
+            // Wait for 3 Seconds before closing, so the User can see the message
+            // TODO Konfiguration zur abschaltung hinzufügen (per Startparameter?)
+            System.Threading.Thread.Sleep(3000);
         }
 
-        public static CAEXObject LoadFile()
+        private static void AMLXCompress(bool CompressType)
         {
-            /*
-             Loads file
-             */
-            Console.WriteLine("give me path to file: ");
-            //read file
+            string src, target;
+            DeCompressor deCompressor = new DeCompressor();
+            PrintHelper.DeCompressor_Choosage(CompressType);
+
+            Console.WriteLine("What is your Input?\n");
+            do
+            {
+                PrintHelper.PrepareConsoleForNewInput();
+                src = Console.ReadLine();
+            } while (Path.GetExtension(@src).ToUpper()!=".AMLX" && !(Directory.Exists(@src) && File.GetAttributes(@src).HasFlag(FileAttributes.Directory)));
+
+            Console.WriteLine("Where do you want to save the Output?\n");
+            do
+            {
+                PrintHelper.PrepareConsoleForNewInput();
+                target = Console.ReadLine();
+            } while (!(File.GetAttributes(@src).HasFlag(FileAttributes.Directory) && Directory.Exists(@src)));
+
+            if (CompressType)
+                deCompressor.Compress(src, target);
+            else
+                deCompressor.DeCompress(src, target);
+        }
+
+        private static CAEXDocument LoadFile(string AMLFile)
+        {
+            if (String.IsNullOrEmpty(AMLFile))
+            {
+                // Ask for File
+                Console.WriteLine("Please insert the Path of the File you want to load:");
+                AMLFile = @Console.ReadLine();
+            }
             // look up input is actual file
-            // load file
+            FileAttributes FileAttr = File.GetAttributes(AMLFile);
+            if (FileAttr.HasFlag(FileAttributes.Directory) || !(Path.GetExtension(AMLFile).ToUpper()==".AML"))
+            {
+                Console.WriteLine("Invalid Path. Returning to Main Menu");
+                return null;
+            }
+            
+            return CAEXDocument.LoadFromFile(AMLFile);  
 
             throw new NotImplementedException("DO IT");
 
-            return null;
         }
     }
 }
