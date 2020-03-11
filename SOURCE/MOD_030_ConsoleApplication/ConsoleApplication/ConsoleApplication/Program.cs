@@ -43,7 +43,7 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            string path = @"D:\Dokumente\Studium\Software-Engineering\BeispielDateien\Rumpf1.aml";
+            string path = @"../../../../../example_files/fehler.aml";
             string outPath;
             CAEXObject doc;
 
