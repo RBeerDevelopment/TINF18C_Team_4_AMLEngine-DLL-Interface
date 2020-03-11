@@ -2,6 +2,7 @@
 using Aml.Engine.Services;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
 
 namespace ConsoleApplication
@@ -15,6 +16,7 @@ namespace ConsoleApplication
 
         public Validator(int logLevel)
         {
+            // ToDo: Decide if setting LogLevel per Function call or per Property
             this.LogLevel = logLevel;
 
             //save default foreground color
@@ -29,9 +31,8 @@ namespace ConsoleApplication
 
             ValidatorService service = ValidatorService.Register();
 
-            var validationResult = service.ValidateAll(doc);
-
-            var enumerator = validationResult.GetEnumerator();
+            var enumerator = service.ValidateAll(doc).GetEnumerator();
+            bool FileChanged = false;
 
             while (enumerator.MoveNext())
             {
@@ -39,12 +40,14 @@ namespace ConsoleApplication
                 //printALLData_for_ValidationElement(enumerator.Current);
                 
                 // print Error
-                this.print_Error(enumerator.Current);
+                print_Error(enumerator.Current);
 
+                // ToDo: Implement Option to automatically repair all
                 // try reparing
-                if (Console.ReadLine().ToUpper().Contains("YES"))
+                if (Console.ReadLine().ToUpper().Trim()=="YES")
                 {
                     //start reparing
+                    FileChanged = true;
                     service.Repair(enumerator.Current);
                     println($"Repair results:  {enumerator.Current.RepairResult}", ConsoleColor.Cyan);
 
@@ -56,13 +59,13 @@ namespace ConsoleApplication
             {
                 println("No errors found", ConsoleColor.Green);
             }
-            else
+            else if (FileChanged)
             {
                 
                 println("Override file (yes/no) ?", this.default_foreground);
 
                 // if override file
-                if (Console.ReadLine().ToUpper().Contains("YES"))
+                if (Console.ReadLine().ToUpper().Trim() == "YES")
                 {
                     doc.SaveToFile(path, true);
 
@@ -73,15 +76,18 @@ namespace ConsoleApplication
                     // save to new file
                     Console.WriteLine("Please insert the Path for the File you want to save:");
                     string new_path = @Console.ReadLine();
-                    doc.SaveToFile(new_path, true);
-                    println($"saved to file {new_path}", ConsoleColor.Cyan);
+                    // Only when User entered a valid Path
+                    if (!String.IsNullOrEmpty(new_path) && File.GetAttributes(new_path).HasFlag(FileAttributes.Directory) && Directory.Exists(new_path))
+                    {
+                        doc.SaveToFile(new_path, true);
+                        println($"saved to file {new_path}", ConsoleColor.Cyan);
+                    }
                 }
 
-
-
             }
-            // wait 3 seconds
-            System.Threading.Thread.Sleep(3000);
+            // @Lukas Wofür?
+            //// wait 3 seconds
+            //System.Threading.Thread.Sleep(3000);
             ValidatorService.UnRegister();
 
         }
@@ -89,7 +95,7 @@ namespace ConsoleApplication
 
         private void print_Error(ValidationElement validationElement)
         {
-            println("ERROR", ConsoleColor.Red);
+            println("Found Error", ConsoleColor.Red);
 
             if (!String.IsNullOrEmpty(validationElement.LongDescription))
             {

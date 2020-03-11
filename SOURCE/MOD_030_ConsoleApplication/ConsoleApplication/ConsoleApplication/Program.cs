@@ -133,11 +133,10 @@ namespace ConsoleApplication
             {
                 // Ask for File
                 Console.WriteLine("Please insert the Path of the File you want to load:");
-                AMLFile = @Console.ReadLine();
+                AMLFile = Console.ReadLine();
             }
             // look up input is actual file
-            FileAttributes FileAttr = File.GetAttributes(AMLFile);
-            if (FileAttr.HasFlag(FileAttributes.Directory) || !(Path.GetExtension(AMLFile).ToUpper()==".AML"))
+            if (File.GetAttributes(@AMLFile).HasFlag(FileAttributes.Directory) || !(Path.GetExtension(@AMLFile).ToUpper()==".AML"))
             {
                 Console.WriteLine("Invalid Path. Returning to Main Menu");
                 return null;
