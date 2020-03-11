@@ -115,7 +115,7 @@ namespace ConsoleApplication
             {
                 PrintHelper.PrepareConsoleForNewInput();
                 target = Console.ReadLine();
-            } while (!(File.GetAttributes(@src).HasFlag(FileAttributes.Directory) && Directory.Exists(@src)));
+            } while (!(File.GetAttributes(@target).HasFlag(FileAttributes.Directory) && Directory.Exists(@target)));
 
             if (CompressType)
                 deCompressor.Compress(src, target);
