@@ -43,7 +43,9 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            string path = @"../../../../../example_files/fehler.aml";
+            //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
+            //string path = @"../../../../../example_files/fehler.aml";
+            string path = "";
             string outPath;
             CAEXObject doc;
 
@@ -66,9 +68,11 @@ namespace ConsoleApplication
                 {
                     case "VALIDATE":
                         //validate file
-                        CAEXDocument CDokument = LoadFile(path);
+                        CAEXDocument CDokument = LoadFile(ref path);
+                        Console.WriteLine(path);
+
                         if ( CDokument != null)
-                            validator.validate(CDokument);
+                            validator.validate(CDokument,path);
                         break;
 
                     case "COMPRESS":
@@ -123,7 +127,7 @@ namespace ConsoleApplication
                 deCompressor.DeCompress(src, target);
         }
 
-        private static CAEXDocument LoadFile(string AMLFile)
+        private static CAEXDocument LoadFile(ref string AMLFile)
         {
             if (String.IsNullOrEmpty(AMLFile))
             {
@@ -138,10 +142,8 @@ namespace ConsoleApplication
                 Console.WriteLine("Invalid Path. Returning to Main Menu");
                 return null;
             }
-            
-            return CAEXDocument.LoadFromFile(AMLFile);  
 
-            throw new NotImplementedException("DO IT");
+            return CAEXDocument.LoadFromFile(AMLFile);  
 
         }
     }

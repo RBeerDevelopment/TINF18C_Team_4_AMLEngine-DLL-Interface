@@ -8,6 +8,7 @@ namespace ConsoleApplication
 {
     public class Validator
     {
+
         public int LogLevel { get; set; }
 
         private ConsoleColor default_foreground { get; set; }
@@ -16,17 +17,16 @@ namespace ConsoleApplication
         {
             this.LogLevel = logLevel;
 
+            //save default foreground color
             this.default_foreground = Console.ForegroundColor;
         }
 
 
-        public bool validate(CAEXDocument doc)
-        {
-            /*
-             * var validationResult_withoutString = service.ValidateAllWithoutStrictID(doc);
 
-             Validate and log Errors with parsing here
-             */
+        public void validate(CAEXDocument doc, string path)
+        {
+            // start validating aml
+
             ValidatorService service = ValidatorService.Register();
 
             var validationResult = service.ValidateAll(doc);
@@ -35,54 +35,79 @@ namespace ConsoleApplication
 
             while (enumerator.MoveNext())
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-
+                // option for printing all options
                 //printALLData_for_ValidationElement(enumerator.Current);
-                Console.WriteLine(this.createMessage(enumerator.Current));
+                
+                // print Error
+                this.print_Error(enumerator.Current);
 
-                Console.ForegroundColor = this.default_foreground;
+                // try reparing
+                if (Console.ReadLine().ToUpper().Contains("YES"))
+                {
+                    //start reparing
+                    service.Repair(enumerator.Current);
+                    println($"Repair results:  {enumerator.Current.RepairResult}", ConsoleColor.Cyan);
+
+                }
             }
 
-            ValidatorService.UnRegister();
-
-            return true;
-        }
-
-        private void printALLData_for_ValidationElement(ValidationElement validationElement)
-        {
-            Console.WriteLine("descrition " + validationElement.LongDescription);
-            Console.WriteLine("Element " + validationElement.Element);
-            Console.WriteLine("ValidatedAttribute " + validationElement.ValidatedAttribute);
-            Console.WriteLine("ValidationType " + validationElement.ValidationType);
-            Console.WriteLine("ValidationInformation " + validationElement.ValidationInformation);
-            Console.WriteLine("RepairResult " + validationElement.RepairResult);
-            Console.WriteLine("CAEXElement " + validationElement.CAEXElement);
-            Console.WriteLine("AvailableRepairOptions " + validationElement.AvailableRepairOptions);
-            Console.WriteLine("\n\n");
-
-        }
-
-        private string createMessage(ValidationElement validationElement)
-        {
-            var message = "";
-
-            if (!String.IsNullOrEmpty(validationElement.LongDescription))
+            // no Errors in mistake
+            if (enumerator.Current == null)
             {
-                message += $"{validationElement.LongDescription} \n";
+                println("No errors found", ConsoleColor.Green);
             }
             else
             {
-                message += $"Exception: {validationElement.ValidationInformation} \n";
+                
+                println("Override file (yes/no) ?", this.default_foreground);
+
+                // if override file
+                if (Console.ReadLine().ToUpper().Contains("YES"))
+                {
+                    doc.SaveToFile(path, true);
+
+                    println($"saved to file {path}", ConsoleColor.Cyan);
+                }
+                else
+                {
+                    // save to new file
+                    Console.WriteLine("Please insert the Path for the File you want to save:");
+                    string new_path = @Console.ReadLine();
+                    doc.SaveToFile(new_path, true);
+                    println($"saved to file {new_path}", ConsoleColor.Cyan);
+                }
+
+
+
+            }
+            // wait 3 seconds
+            System.Threading.Thread.Sleep(3000);
+            ValidatorService.UnRegister();
+
+        }
+
+
+        private void print_Error(ValidationElement validationElement)
+        {
+            println("ERROR", ConsoleColor.Red);
+
+            if (!String.IsNullOrEmpty(validationElement.LongDescription))
+            {
+                println($"{validationElement.LongDescription}", ConsoleColor.Yellow);
+            }
+            else
+            {
+                println($"Exception: {validationElement.ValidationInformation}", this.default_foreground);
             }
 
-            message += $"Error with attribute \"{validationElement.ValidatedAttribute}\" \n";
+            println($"Error with attribute \"{validationElement.ValidatedAttribute}\" ", this.default_foreground);
 
-            message += $"Options for reparing \"{validationElement.AvailableRepairOptions}\" \n";
+            println($"Options for reparing \"{validationElement.AvailableRepairOptions}\" \n", ConsoleColor.Green);
 
-            message += $" \nError in element:\n{this.line()} \n{validationElement.Element}\n{this.line()} \n";
+            println("Error in element:", this.default_foreground);
+            println($"{this.line()} \n{validationElement.Element}\n{this.line()} \n", ConsoleColor.Blue);
 
-
-            return message;
+            println("\nType yes for repairing option", ConsoleColor.Yellow);
         }
 
 
@@ -92,6 +117,16 @@ namespace ConsoleApplication
             /*
              writes Error to console ??
              */
+        }
+
+
+        private void println(string message, ConsoleColor color)
+        {
+            Console.ForegroundColor = color;
+
+            Console.WriteLine(message);
+
+            Console.ForegroundColor = this.default_foreground;
         }
 
 
@@ -105,6 +140,21 @@ namespace ConsoleApplication
 
 
             return x;
+        }
+
+
+        private void printALLData_for_ValidationElement(ValidationElement validationElement)
+        {
+            Console.WriteLine("descrition " + validationElement.LongDescription);
+            Console.WriteLine("Element " + validationElement.Element);
+            Console.WriteLine("ValidatedAttribute " + validationElement.ValidatedAttribute);
+            Console.WriteLine("ValidationType " + validationElement.ValidationType);
+            Console.WriteLine("ValidationInformation " + validationElement.ValidationInformation);
+            Console.WriteLine("RepairResult " + validationElement.RepairResult);
+            Console.WriteLine("CAEXElement " + validationElement.CAEXElement);
+            Console.WriteLine("AvailableRepairOptions " + validationElement.AvailableRepairOptions);
+            Console.WriteLine("\n\n");
+
         }
     }
 }
