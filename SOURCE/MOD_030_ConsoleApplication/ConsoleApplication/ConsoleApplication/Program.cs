@@ -43,7 +43,9 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
-            string path = @"D:\Dokumente\Studium\Software-Engineering\BeispielDateien\Rumpf1.aml";
+            //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
+            //string path = @"../../../../../example_files/fehler.aml";
+            string path = "";
             string outPath;
             CAEXObject doc;
 
@@ -66,9 +68,11 @@ namespace ConsoleApplication
                 {
                     case "VALIDATE":
                         //validate file
-                        CAEXDocument CDokument = LoadFile(path);
+                        CAEXDocument CDokument = LoadFile(ref path);
+                        Console.WriteLine(path);
+
                         if ( CDokument != null)
-                            validator.validate(CDokument);
+                            validator.validate(CDokument,path);
                         break;
 
                     case "COMPRESS":
@@ -123,25 +127,22 @@ namespace ConsoleApplication
                 deCompressor.DeCompress(src, target);
         }
 
-        private static CAEXDocument LoadFile(string AMLFile)
+        private static CAEXDocument LoadFile(ref string AMLFile)
         {
             if (String.IsNullOrEmpty(AMLFile))
             {
                 // Ask for File
                 Console.WriteLine("Please insert the Path of the File you want to load:");
-                AMLFile = @Console.ReadLine();
+                AMLFile = Console.ReadLine();
             }
             // look up input is actual file
-            FileAttributes FileAttr = File.GetAttributes(AMLFile);
-            if (FileAttr.HasFlag(FileAttributes.Directory) || !(Path.GetExtension(AMLFile).ToUpper()==".AML"))
+            if (File.GetAttributes(@AMLFile).HasFlag(FileAttributes.Directory) || !(Path.GetExtension(@AMLFile).ToUpper()==".AML"))
             {
                 Console.WriteLine("Invalid Path. Returning to Main Menu");
                 return null;
             }
-            
-            return CAEXDocument.LoadFromFile(AMLFile);  
 
-            throw new NotImplementedException("DO IT");
+            return CAEXDocument.LoadFromFile(AMLFile);  
 
         }
     }
