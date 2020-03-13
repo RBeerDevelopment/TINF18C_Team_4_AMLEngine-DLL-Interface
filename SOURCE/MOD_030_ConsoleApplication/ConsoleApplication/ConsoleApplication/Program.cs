@@ -109,7 +109,7 @@ namespace ConsoleApplication
 
             Console.WriteLine("What is your Input?\n");
             src = CompressType ? PrintHelper.GetDirectory() : PrintHelper.GetFile("AMLX-File","*.AMLX");
-            if (src == null || (CompressType ? false : Path.GetExtension(src).ToUpper() != ".AMLX"))
+            if (String.IsNullOrEmpty(src) || (CompressType ? false : Path.GetExtension(src).ToUpper() != ".AMLX"))
                 return;
 
             Console.WriteLine("Where do you want to save the Output?\n");

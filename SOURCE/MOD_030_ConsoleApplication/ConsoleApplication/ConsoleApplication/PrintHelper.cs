@@ -78,5 +78,28 @@ namespace ConsoleApplication
             else
                 return null;
         }
+
+        public static void println(string message, ConsoleColor color)
+        {
+            ConsoleColor defaultColor = Console.ForegroundColor;
+
+            Console.ForegroundColor = color;
+
+            Console.WriteLine(message);
+
+            Console.ForegroundColor = defaultColor;
+        }
+
+        public static string line()
+        {
+            var x = "";
+            for (int i = 0; i < 50; i++)
+            {
+                x += "_";
+            }
+
+
+            return x;
+        }
     }
 }
