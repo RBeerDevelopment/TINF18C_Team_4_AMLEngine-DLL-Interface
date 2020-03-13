@@ -45,13 +45,20 @@ namespace ConsoleApplication
         {
             //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
             //string path = @"../../../../../example_files/fehler.aml";
-            string path = "";
-            string outPath;
+            //string path = "";
+            //string outPath;
+            string path = @"../../../../../example_files/decompressed";
+            string outPath = @"../../../../../example_files/Rumpf_container.amlx";
             CAEXObject doc;
 
 
+            //test
+            DeCompressor.DeCompress(outPath, path);
+
             // Contstructor with loglevel
             Validator validator = new Validator(1);
+
+
 
 
             PrintHelper.welcome();
@@ -71,8 +78,8 @@ namespace ConsoleApplication
                         CAEXDocument CDokument = LoadFile(ref path);
                         Console.WriteLine(path);
 
-                        if ( CDokument != null)
-                            validator.validate(CDokument,path);
+                        if (CDokument != null)
+                            validator.validate(CDokument, path);
                         break;
 
                     case "COMPRESS":
@@ -104,7 +111,7 @@ namespace ConsoleApplication
         private static void AMLXCompress(bool CompressType)
         {
             string src, target;
-            DeCompressor deCompressor = new DeCompressor();
+            //DeCompressor deCompressor = new DeCompressor();
             PrintHelper.DeCompressor_Choosage(CompressType);
 
             Console.WriteLine("What is your Input?\n");
@@ -112,7 +119,7 @@ namespace ConsoleApplication
             {
                 PrintHelper.PrepareConsoleForNewInput();
                 src = Console.ReadLine();
-            } while (Path.GetExtension(@src).ToUpper()!=".AMLX" && !(Directory.Exists(@src) && File.GetAttributes(@src).HasFlag(FileAttributes.Directory)));
+            } while (Path.GetExtension(@src).ToUpper() != ".AMLX" && !(Directory.Exists(@src) && File.GetAttributes(@src).HasFlag(FileAttributes.Directory)));
 
             Console.WriteLine("Where do you want to save the Output?\n");
             do
@@ -122,9 +129,9 @@ namespace ConsoleApplication
             } while (!(File.GetAttributes(@target).HasFlag(FileAttributes.Directory) && Directory.Exists(@target)));
 
             if (CompressType)
-                deCompressor.Compress(src, target);
+                DeCompressor.Compress(src, target);
             else
-                deCompressor.DeCompress(src, target);
+                DeCompressor.DeCompress(src, target);
         }
 
         private static CAEXDocument LoadFile(ref string AMLFile)
@@ -136,13 +143,13 @@ namespace ConsoleApplication
                 AMLFile = Console.ReadLine();
             }
             // look up input is actual file
-            if (File.GetAttributes(@AMLFile).HasFlag(FileAttributes.Directory) || !(Path.GetExtension(@AMLFile).ToUpper()==".AML"))
+            if (File.GetAttributes(@AMLFile).HasFlag(FileAttributes.Directory) || !(Path.GetExtension(@AMLFile).ToUpper() == ".AML"))
             {
                 Console.WriteLine("Invalid Path. Returning to Main Menu");
                 return null;
             }
 
-            return CAEXDocument.LoadFromFile(AMLFile);  
+            return CAEXDocument.LoadFromFile(AMLFile);
 
         }
     }
