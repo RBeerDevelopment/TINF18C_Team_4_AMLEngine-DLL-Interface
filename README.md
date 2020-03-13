@@ -14,4 +14,9 @@
              Rotebühlplatz 41
              70178 Stuttgart
 
-
+## Documentation:
+- [Home](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki)
+  - [Development Documentation](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/Development-Documentation)
+  - [System Requirements](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Requirements)
+  - [System Architecture](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Architecture)
+  - [System Testing](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Testing)
