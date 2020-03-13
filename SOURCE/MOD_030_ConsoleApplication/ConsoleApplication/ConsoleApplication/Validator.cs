@@ -85,9 +85,8 @@ namespace ConsoleApplication
                 }
 
             }
-            // @Lukas Wofür?
-            //// wait 3 seconds
-            //System.Threading.Thread.Sleep(3000);
+            // wait 3 seconds for user to read result
+            System.Threading.Thread.Sleep(3000);
             ValidatorService.UnRegister();
 
         }

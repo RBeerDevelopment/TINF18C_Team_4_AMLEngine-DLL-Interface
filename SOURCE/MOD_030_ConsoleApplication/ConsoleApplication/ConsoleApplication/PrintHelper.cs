@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using System.Windows.Forms;
 
 namespace ConsoleApplication
 {
@@ -24,7 +26,14 @@ namespace ConsoleApplication
         public static void loopExplanation()
         {
             // entscheide
-            Console.Clear();
+            try
+            {
+                Console.Clear();
+            }
+            catch (Exception)
+            {
+                // Wenn nicht dann halt nicht
+            }
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("Type \"Validate\" to Validate an AML-File");
             Console.WriteLine("Type \"Compress\" or \"Decompress\" to Compress or Decompress an existing AMLX-File");
@@ -45,6 +54,29 @@ namespace ConsoleApplication
             Console.SetCursorPosition(0, Console.CursorTop - 1);
             Console.WriteLine("                                                                                                                                                        ");
             Console.SetCursorPosition(0, Console.CursorTop - 2);
+        }
+
+        public static string GetFile(string Filename, string FileExtensions)
+        {
+            OpenFileDialog dialog = new OpenFileDialog
+            {
+                Multiselect = false,
+                Title = "Open "+Filename,
+                Filter = Filename+"|"+FileExtensions
+            };
+            if (dialog.ShowDialog() == DialogResult.OK && File.Exists(@dialog.FileName))
+                return @dialog.FileName;
+            else
+                return null;
+        }
+
+        public static string GetDirectory()
+        {
+            FolderBrowserDialog dialog = new FolderBrowserDialog();
+            if (dialog.ShowDialog() == DialogResult.OK && Directory.Exists(@dialog.SelectedPath) && File.GetAttributes(@dialog.SelectedPath).HasFlag(FileAttributes.Directory))
+                return @dialog.SelectedPath;
+            else
+                return null;
         }
     }
 }
