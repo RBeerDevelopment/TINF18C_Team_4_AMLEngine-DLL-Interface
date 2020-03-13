@@ -31,10 +31,10 @@ namespace ConsoleApplication
             Console.WriteLine("Type \"Quit\" or \"Exit\" to exit the Program");
         }
 
-        public static void DeCompressor_Choosage(bool Compress = true)
+        public static void DeCompressor_Choosage(CompressTypeEnum Compress)
         {
             Console.Clear();
-            if (Compress)
+            if (Compress== CompressTypeEnum.Compress)
                 Console.WriteLine("Compress a Folder to an AMLX-File\n");
             else
                 Console.WriteLine("De-Compress an AMLX-File to a Folder\n");

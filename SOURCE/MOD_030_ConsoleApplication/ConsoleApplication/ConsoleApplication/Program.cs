@@ -43,6 +43,8 @@ namespace ConsoleApplication
     {
         public static void Main(string[] args)
         {
+            //CompressTypeEnum compressType;
+
             //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
             //string path = @"../../../../../example_files/fehler.aml";
             //string path = "";
@@ -53,7 +55,7 @@ namespace ConsoleApplication
 
 
             //test
-            DeCompressor.DeCompress(outPath, path);
+            //DeCompressor.DeCompress(outPath, path);
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);
@@ -83,10 +85,12 @@ namespace ConsoleApplication
                         break;
 
                     case "COMPRESS":
-                        AMLXCompress(true);
+                        AMLXCompress(CompressTypeEnum.Compress);
                         break;
+                    // add decompress as alternate key
+                    case "DECOMPRESS":
                     case "DE-COMPRESS":
-                        AMLXCompress(false);
+                        AMLXCompress(CompressTypeEnum.DeCompres);
                         break;
                     case "EXIT":
                     case "QUIT":
@@ -108,7 +112,7 @@ namespace ConsoleApplication
             System.Threading.Thread.Sleep(3000);
         }
 
-        private static void AMLXCompress(bool CompressType)
+        private static void AMLXCompress(CompressTypeEnum CompressType)
         {
             string src, target;
             //DeCompressor deCompressor = new DeCompressor();
@@ -128,7 +132,7 @@ namespace ConsoleApplication
                 target = Console.ReadLine();
             } while (!(File.GetAttributes(@target).HasFlag(FileAttributes.Directory) && Directory.Exists(@target)));
 
-            if (CompressType)
+            if (CompressType==CompressTypeEnum.Compress)
                 DeCompressor.Compress(src, target);
             else
                 DeCompressor.DeCompress(src, target);
@@ -152,5 +156,6 @@ namespace ConsoleApplication
             return CAEXDocument.LoadFromFile(AMLFile);
 
         }
+
     }
 }
