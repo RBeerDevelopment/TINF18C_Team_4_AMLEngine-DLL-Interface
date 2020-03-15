@@ -41,6 +41,7 @@ namespace ConsoleApplication
 {
     public class Program
     {
+        [STAThread]
         public static void Main(string[] args)
         {
             //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
@@ -48,7 +49,6 @@ namespace ConsoleApplication
             string path = "";
             string outPath;
             CAEXObject doc;
-
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);
@@ -78,7 +78,7 @@ namespace ConsoleApplication
                     case "COMPRESS":
                         AMLXCompress(true);
                         break;
-                    case "DE-COMPRESS":
+                    case "DECOMPRESS":
                         AMLXCompress(false);
                         break;
                     case "EXIT":
@@ -108,18 +108,14 @@ namespace ConsoleApplication
             PrintHelper.DeCompressor_Choosage(CompressType);
 
             Console.WriteLine("What is your Input?\n");
-            do
-            {
-                PrintHelper.PrepareConsoleForNewInput();
-                src = Console.ReadLine();
-            } while (Path.GetExtension(@src).ToUpper()!=".AMLX" && !(Directory.Exists(@src) && File.GetAttributes(@src).HasFlag(FileAttributes.Directory)));
+            src = CompressType ? PrintHelper.GetDirectory() : PrintHelper.GetFile("AMLX-File","*.AMLX");
+            if (String.IsNullOrEmpty(src) || (CompressType ? false : Path.GetExtension(src).ToUpper() != ".AMLX"))
+                return;
 
             Console.WriteLine("Where do you want to save the Output?\n");
-            do
-            {
-                PrintHelper.PrepareConsoleForNewInput();
-                target = Console.ReadLine();
-            } while (!(File.GetAttributes(@target).HasFlag(FileAttributes.Directory) && Directory.Exists(@target)));
+            target = PrintHelper.GetDirectory();
+            if (String.IsNullOrEmpty(target))
+                return;
 
             if (CompressType)
                 deCompressor.Compress(src, target);
@@ -132,17 +128,14 @@ namespace ConsoleApplication
             if (String.IsNullOrEmpty(AMLFile))
             {
                 // Ask for File
-                Console.WriteLine("Please insert the Path of the File you want to load:");
-                AMLFile = Console.ReadLine();
+                Console.WriteLine("Which File do you want to load?");
+                AMLFile = PrintHelper.GetFile("AML-File", "*.AML");
             }
             // look up input is actual file
-            if (File.GetAttributes(@AMLFile).HasFlag(FileAttributes.Directory) || !(Path.GetExtension(@AMLFile).ToUpper()==".AML"))
-            {
-                Console.WriteLine("Invalid Path. Returning to Main Menu");
+            if (String.IsNullOrEmpty(AMLFile))
                 return null;
-            }
-
-            return CAEXDocument.LoadFromFile(AMLFile);  
+            else
+                return CAEXDocument.LoadFromFile(AMLFile);  
 
         }
     }
