@@ -84,6 +84,7 @@ namespace ConsoleApplication
                     }
                 }
             }
+
             else
             {
                 PrintHelper.println("Returning to Main Menu", this.default_foreground);

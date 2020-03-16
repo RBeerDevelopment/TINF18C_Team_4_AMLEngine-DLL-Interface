@@ -44,10 +44,11 @@ namespace ConsoleApplication
         [STAThread]
         public static void Main(string[] args)
         {
-            //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
             //string path = @"../../../../../example_files/fehler.aml";
             string path = "";
-            string outPath;
+
+            //string src_path = @"../../../../../example_files/zuPacken";
+            //string outPath = @"../../../../../example_files/target.amlx";
             CAEXObject doc;
 
             // Contstructor with loglevel
@@ -104,7 +105,6 @@ namespace ConsoleApplication
         private static void AMLXCompress(bool CompressType)
         {
             string src, target;
-            DeCompressor deCompressor = new DeCompressor();
             PrintHelper.DeCompressor_Choosage(CompressType);
 
             Console.WriteLine("What is your Input?\n");
@@ -118,9 +118,9 @@ namespace ConsoleApplication
                 return;
 
             if (CompressType)
-                deCompressor.Compress(src, target);
+                DeCompressor.Compress(src, target);
             else
-                deCompressor.DeCompress(src, target);
+                DeCompressor.DeCompress(src, target);
         }
 
         private static CAEXDocument LoadFile(ref string AMLFile)
