@@ -47,11 +47,9 @@ namespace ConsoleApplication
             //string path = @"../../../../../example_files/fehler.aml";
             string path = "";
 
-            string src_path = @"../../../../../example_files/zuPacken";
-            string outPath = @"../../../../../example_files/target.aml";
+            //string src_path = @"../../../../../example_files/zuPacken";
+            //string outPath = @"../../../../../example_files/target.amlx";
             CAEXObject doc;
-
-            DeCompressor.Compress(src_path, outPath);
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);

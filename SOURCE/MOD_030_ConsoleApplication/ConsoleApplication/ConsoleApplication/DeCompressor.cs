@@ -40,7 +40,17 @@ namespace ConsoleApplication
 
         public static void DeCompress(string file_path_src,string folder_path_target)
         {
-
+            try
+            {
+                var container = new Aml.Engine.AmlObjects.AutomationMLContainer(file_path_src);
+                container.ExtractAllFiles(folder_path_target);
+            }
+            catch (IOException ex)
+            {
+                
+                Console.WriteLine($"Error occured ( {ex})");
+                Console.WriteLine("\n Cannot find file..");
+            }
         }
     }
 }
