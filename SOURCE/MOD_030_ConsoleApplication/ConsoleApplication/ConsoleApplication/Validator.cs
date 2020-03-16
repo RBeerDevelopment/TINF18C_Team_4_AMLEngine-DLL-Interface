@@ -84,8 +84,7 @@ namespace ConsoleApplication
                     }
                 }
             }
-<<<<  else<<< UseFileDialog
-          
+            else
             {
                 PrintHelper.println("Returning to Main Menu", this.default_foreground);
             }
