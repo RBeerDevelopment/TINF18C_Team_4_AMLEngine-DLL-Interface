@@ -44,11 +44,14 @@ namespace ConsoleApplication
         [STAThread]
         public static void Main(string[] args)
         {
-            //string path = @"../../../../../example_files/AutomationMLCMIRoleClassLib.aml";
             //string path = @"../../../../../example_files/fehler.aml";
             string path = "";
-            string outPath;
+
+            string src_path = @"../../../../../example_files/zuPacken";
+            string outPath = @"../../../../../example_files/target.aml";
             CAEXObject doc;
+
+            DeCompressor.Compress(src_path, outPath);
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);
