@@ -104,7 +104,6 @@ namespace ConsoleApplication
         private static void AMLXCompress(bool CompressType)
         {
             string src, target;
-            DeCompressor deCompressor = new DeCompressor();
             PrintHelper.DeCompressor_Choosage(CompressType);
 
             Console.WriteLine("What is your Input?\n");
@@ -118,9 +117,9 @@ namespace ConsoleApplication
                 return;
 
             if (CompressType)
-                deCompressor.Compress(src, target);
+                DeCompressor.Compress(src, target);
             else
-                deCompressor.DeCompress(src, target);
+                DeCompressor.DeCompress(src, target);
         }
 
         private static CAEXDocument LoadFile(ref string AMLFile)
