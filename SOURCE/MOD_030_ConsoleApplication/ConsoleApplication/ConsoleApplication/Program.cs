@@ -49,6 +49,7 @@ namespace ConsoleApplication
 
             //string src_path = @"../../../../../example_files/zuPacken";
             //string outPath = @"../../../../../example_files/target.amlx";
+            CAEXObject doc;
 
             // Contstructor with loglevel
             Validator validator = new Validator(1);
@@ -107,8 +108,8 @@ namespace ConsoleApplication
             PrintHelper.DeCompressor_Choosage(CompressType);
 
             Console.WriteLine("What is your Input?\n");
-            src = CompressType ? PrintHelper.GetFile("AMLX-File", "*.AMLX") : PrintHelper.GetDirectory();
-            if (String.IsNullOrEmpty(src) || (CompressType ? Path.GetExtension(src).ToUpper() != ".AMLX" : false))
+            src = CompressType ? PrintHelper.GetDirectory() : PrintHelper.GetFile("AMLX-File","*.AMLX");
+            if (String.IsNullOrEmpty(src) || (CompressType ? false : Path.GetExtension(src).ToUpper() != ".AMLX"))
                 return;
 
             Console.WriteLine("Where do you want to save the Output?\n");
