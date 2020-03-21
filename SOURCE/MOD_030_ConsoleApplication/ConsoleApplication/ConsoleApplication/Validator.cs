@@ -1,9 +1,6 @@
 ﻿using Aml.Engine.CAEX;
 using Aml.Engine.Services;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Text;
 
 namespace ConsoleApplication
 {
@@ -84,17 +81,10 @@ namespace ConsoleApplication
                     }
                 }
             }
-
-            else
-            {
-                PrintHelper.println("Returning to Main Menu", this.default_foreground);
-            }
-            // wait 3 seconds for user to read result
-            System.Threading.Thread.Sleep(3000);
             ValidatorService.UnRegister();
+            PrintHelper.Exit("Returning to Main Menu");
 
         }
-
 
         private void print_Error(ValidationElement validationElement)
         {
@@ -118,16 +108,6 @@ namespace ConsoleApplication
 
             PrintHelper.println("\nType yes for repairing option", ConsoleColor.Yellow);
         }
-
-
-
-        private void Error(string message, int _logLevel)
-        {
-            /*
-             writes Error to console ??
-             */
-        }
-
 
         private void printALLData_for_ValidationElement(ValidationElement validationElement)
         {
