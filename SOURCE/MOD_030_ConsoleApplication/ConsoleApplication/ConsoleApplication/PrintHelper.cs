@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 using System.Windows.Forms;
 
 namespace ConsoleApplication
@@ -16,11 +14,10 @@ namespace ConsoleApplication
             Console.WriteLine("welcome, doc, explant");
         }
 
-        public static void exit()
+        public static void Exit(string Message = "")
         {
-            // print welcome,license .... Doc , explanat
-
-            Console.WriteLine("thanks for working with us, please donate under ...");
+            System.Threading.Thread.Sleep(3000);
+            Console.WriteLine(Message);
         }
 
         public static void loopExplanation()
@@ -56,14 +53,15 @@ namespace ConsoleApplication
             Console.SetCursorPosition(0, Console.CursorTop - 2);
         }
 
-        public static string GetFile(string Filename, string FileExtensions)
+        public static string GetFile(string Filename = "Any File" , string FileExtensions = "")
         {
             OpenFileDialog dialog = new OpenFileDialog
             {
                 Multiselect = false,
-                Title = "Open "+Filename,
-                Filter = Filename+"|"+FileExtensions
+                Title = "Open " + Filename,
             };
+            if (!String.IsNullOrEmpty(FileExtensions))
+                dialog.Filter = Filename + "|" + FileExtensions;
             if (dialog.ShowDialog() == DialogResult.OK && File.Exists(@dialog.FileName))
                 return @dialog.FileName;
             else

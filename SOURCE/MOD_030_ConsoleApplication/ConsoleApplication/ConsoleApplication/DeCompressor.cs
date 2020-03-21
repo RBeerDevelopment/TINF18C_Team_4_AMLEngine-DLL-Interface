@@ -1,40 +1,44 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.IO.Packaging;
-using System.Text;
 
 namespace ConsoleApplication
 {
     public static class DeCompressor
     {
-        public static void Compress(string folder_path_src, string file_target)
+        public static void Compress(string sourceAMLFile, string file_target, List<string> OtherFiles)
         {
-            // ! Verlangt file_target kein Verzechniss sondern Datei
-
-
-
-            // creates empty AMLX / ZIP in target directory
-            var container = new Aml.Engine.AmlObjects.AutomationMLContainer(file_target, FileMode.OpenOrCreate);
-
-
-            using (Package zip = container.Package)
+            try
             {
-                string destFilename = ".\\" + Path.GetFileName(file_target);
-                Uri uri = PackUriHelper.CreatePartUri(new Uri(destFilename, UriKind.Relative));
-                if (zip.PartExists(uri))
+                // creates empty AMLX / ZIP in target directory
+                string filename = Path.Combine(file_target, "Compressed-AMLX.amlx");
+
+                // Create AML Container
+                var container = new Aml.Engine.AmlObjects.AutomationMLContainer(filename, FileMode.Create);
+
+                // Add Root-Element of AMLX-File
+                var Root = container.AddRoot(sourceAMLFile, new Uri("/" + Path.GetFileName(sourceAMLFile), UriKind.Relative));
+
+                //Add More Files if User wants more
+                foreach (string NextFile in OtherFiles)
                 {
-                    zip.DeletePart(uri);
+                    if (Path.GetExtension(NextFile).ToUpper() == ".XSD")
+                        container.AddCAEXSchema(NextFile, new Uri("/" + Path.GetFileName(NextFile), UriKind.Relative));
+                    else
+                        container.AddAnyContent(Root, NextFile, new Uri("/" + Path.GetFileName(NextFile), UriKind.Relative));
                 }
-                PackagePart part = zip.CreatePart(uri, "", CompressionOption.Normal);
-                using (FileStream fileStream = new FileStream(folder_path_src, FileMode.Open, FileAccess.Read))
-                {
-                    using (Stream dest = part.GetStream())
-                    {
-                        fileStream.CopyTo(dest);
-                    }
-                }
+                // Finally Close File
+                container.Close();
+
+                Console.WriteLine("Sucessfully Created AMLX-File");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString());
+                PrintHelper.println("Could not Create AMLX-File",ConsoleColor.Red);
+            }
+
+            PrintHelper.Exit("Returning to Main Menu");
 
         }
 
@@ -44,13 +48,19 @@ namespace ConsoleApplication
             {
                 var container = new Aml.Engine.AmlObjects.AutomationMLContainer(file_path_src);
                 container.ExtractAllFiles(folder_path_target);
+                Console.WriteLine("\nSuccessfully Extracted Files");
             }
             catch (IOException ex)
             {
-                
                 Console.WriteLine($"Error occured ( {ex})");
                 Console.WriteLine("\n Cannot find file..");
             }
+            catch (Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString());
+                PrintHelper.println("Could not Extract Files", ConsoleColor.Red);
+            }
+            PrintHelper.Exit("\nReturning to Main Menu");
         }
     }
 }

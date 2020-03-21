@@ -1,5 +1,6 @@
 ﻿using Aml.Engine.CAEX;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 /**
@@ -44,83 +45,113 @@ namespace ConsoleApplication
         [STAThread]
         public static void Main(string[] args)
         {
-            //string path = @"../../../../../example_files/fehler.aml";
-            string path = "";
-
-            //string src_path = @"../../../../../example_files/zuPacken";
-            //string outPath = @"../../../../../example_files/target.amlx";
-            CAEXObject doc;
-
-            // Contstructor with loglevel
-            Validator validator = new Validator(1);
-
-
-            PrintHelper.welcome();
-
-            bool loop = true;
-
-            while (loop)
+            try
             {
-                PrintHelper.loopExplanation();
+                string path = "";
 
+                // Contstructor with loglevel
+                Validator validator = new Validator(1);
+                PrintHelper.welcome();
 
-                // TODO: Improve choose options
-                switch (Console.ReadLine().ToUpper())
+                bool loop = true;
+
+                while (loop)
                 {
-                    case "VALIDATE":
-                        //validate file
-                        CAEXDocument CDokument = LoadFile(ref path);
-                        Console.WriteLine(path);
-
-                        if ( CDokument != null)
-                            validator.validate(CDokument,path);
-                        break;
-
-                    case "COMPRESS":
-                        AMLXCompress(true);
-                        break;
-                    case "DECOMPRESS":
-                        AMLXCompress(false);
-                        break;
-                    case "EXIT":
-                    case "QUIT":
-                        loop = false;
-                        break;
+                    PrintHelper.loopExplanation();
 
 
-                    default:
-                        Console.WriteLine("Invalid Input \n");
-                        continue;
+                    // TODO: Improve choose options
+                    switch (Console.ReadLine().ToUpper())
+                    {
+                        case "VALIDATE":
+                            //validate file
+                            CAEXDocument CDokument = LoadFile(ref path);
+                            Console.WriteLine(path);
+                            if (CDokument != null)
+                                validator.validate(CDokument, path);
+                            break;
+
+                        case "COMPRESS":
+                            AMLXCompress();
+                            break;
+                        case "DECOMPRESS":
+                            AMLXDeCompress();
+                            break;
+                        case "EXIT":
+                        case "QUIT":
+                            loop = false;
+                            break;
+
+
+                        default:
+                            Console.WriteLine("Invalid Input \n");
+                            continue;
+                    }
+
                 }
 
+                // Wait for 3 Seconds before closing, so the User can see the message
+                // TODO Konfiguration zur abschaltung hinzufügen (per Startparameter?)
+                PrintHelper.Exit("thanks for working with us, please donate under...");
             }
-
-            PrintHelper.exit();
-
-            // Wait for 3 Seconds before closing, so the User can see the message
-            // TODO Konfiguration zur abschaltung hinzufügen (per Startparameter?)
-            System.Threading.Thread.Sleep(3000);
+            catch(Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString());
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("SCHWERER AUSNAHMEFEHLER. PROGRAMM WIRD IN 20 SEKUNDEN BEENDET");
+                System.Threading.Thread.Sleep(20000);
+            }
         }
 
-        private static void AMLXCompress(bool CompressType)
+        private static void AMLXCompress()
+        {
+            string sourceAMLFile, target, newFile;
+            bool AnotherFile;
+            List<string> FilesToAdd = new List<string>();
+            PrintHelper.DeCompressor_Choosage(true);
+
+            Console.WriteLine("What is your Input AML-File?\n");
+            sourceAMLFile = PrintHelper.GetFile("AML-File","*.AML");
+            if (String.IsNullOrEmpty(sourceAMLFile))
+                return;
+
+            Console.WriteLine("Do you want to add another File?(Yes/No)");
+            AnotherFile = Console.ReadLine().ToUpper() == "YES";
+            while(AnotherFile)
+            {
+                newFile = PrintHelper.GetFile();
+                if (!String.IsNullOrEmpty(newFile))
+                {
+                    FilesToAdd.Add(newFile);
+                    Console.WriteLine("Do you want to add more Files?(Yes/No)");
+                    AnotherFile = Console.ReadLine().ToUpper() == "YES";
+                }
+                else
+                    break;
+            }
+
+            Console.WriteLine("Where do you want to save the Output?\n");
+            target = PrintHelper.GetDirectory();
+            if (String.IsNullOrEmpty(target))
+                return;
+            DeCompressor.Compress(sourceAMLFile, target, FilesToAdd);
+        }
+
+        private static void AMLXDeCompress()
         {
             string src, target;
-            PrintHelper.DeCompressor_Choosage(CompressType);
+            PrintHelper.DeCompressor_Choosage(false);
 
             Console.WriteLine("What is your Input?\n");
-            src = CompressType ? PrintHelper.GetDirectory() : PrintHelper.GetFile("AMLX-File","*.AMLX");
-            if (String.IsNullOrEmpty(src) || (CompressType ? false : Path.GetExtension(src).ToUpper() != ".AMLX"))
+            src = PrintHelper.GetFile("AMLX-File", "*.AMLX");
+            if (String.IsNullOrEmpty(src) || (Path.GetExtension(src).ToUpper() != ".AMLX"))
                 return;
 
             Console.WriteLine("Where do you want to save the Output?\n");
             target = PrintHelper.GetDirectory();
             if (String.IsNullOrEmpty(target))
                 return;
-
-            if (CompressType)
-                DeCompressor.Compress(src, target);
-            else
-                DeCompressor.DeCompress(src, target);
+            DeCompressor.DeCompress(src, target);
         }
 
         private static CAEXDocument LoadFile(ref string AMLFile)
@@ -128,7 +159,7 @@ namespace ConsoleApplication
             if (String.IsNullOrEmpty(AMLFile))
             {
                 // Ask for File
-                Console.WriteLine("Which File do you want to load?");
+                Console.WriteLine("Which File do you want to validate?");
                 AMLFile = PrintHelper.GetFile("AML-File", "*.AML");
             }
             // look up input is actual file
