@@ -18,28 +18,16 @@ namespace Adapter
 
     public class Startup
     {
-        public async Task<object> Invoke(dynamic input)
+        public async Task<object> Invoke(dynamic payload)
         {
-            Console.WriteLine(input.i);
-            if (input.i == 1)
+            Console.WriteLine($"Calling function {payload.name}");
+            Console.WriteLine($"With {payload.input}");
+            if (payload.name == "createTestFile")
             {
                 var caexDocument = CAEXDocument.New_CAEXDocument();
                 caexDocument.SaveToFile("build/Lucas_ist_ein_doofi.aml", true);
             }
-            return this.Add7((int)input.c);
-        }
-
-        int Add7(int v)
-        {
-            return Helper.Add7(v);
-        }
-    }
-
-    static class Helper
-    {
-        public static int Add7(int v)
-        {
-            return v + 7;
+            return true;
         }
     }
 }
