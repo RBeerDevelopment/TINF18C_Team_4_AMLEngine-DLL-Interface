@@ -16,24 +16,18 @@ namespace ConsoleApplication
 
         public static void Exit(string Message = "")
         {
-            System.Threading.Thread.Sleep(3000);
             Console.WriteLine(Message);
+            System.Threading.Thread.Sleep(3000);
         }
 
         public static void loopExplanation()
         {
             // entscheide
-            try
-            {
-                Console.Clear();
-            }
-            catch (Exception)
-            {
-                // Wenn nicht dann halt nicht
-            }
+            Console.Clear();
             Console.WriteLine("What do you want to do?");
             Console.WriteLine("Type \"Validate\" to Validate an AML-File");
             Console.WriteLine("Type \"Compress\" or \"Decompress\" to Compress or Decompress an existing AMLX-File");
+            Console.WriteLine("Type \"Options\" to Edit the Configuration");
             Console.WriteLine("Type \"Quit\" or \"Exit\" to exit the Program");
         }
 
@@ -98,6 +92,36 @@ namespace ConsoleApplication
 
 
             return x;
+        }
+
+        public static void printOptions()
+        {
+                Console.Clear();
+                Console.WriteLine("Available Options to configure this Program: \n");
+                Console.WriteLine("AutoRepair: Automatically repais all Issues found while Validating\n");
+                Console.WriteLine("PrintAllVal: Prints all found Elements to the Console while Validating\n\n");
+                Console.WriteLine("Which Config do you want to Change?");
+                Console.WriteLine("Type Exit, Quit or just press Enter to go back to Menu\n");
+        }
+
+        public static void printOptionAutoRepair(bool CurrentValue)
+        {
+            Console.Clear();
+            Console.WriteLine("What should be the new Value?");
+            Console.WriteLine("Current Value :" + CurrentValue.ToString());
+            Console.WriteLine("Possible Values: ");
+            Console.WriteLine(" - false (default): The Validator asks before each repair, if the User wants to Repair this Issue.");
+            Console.WriteLine(" - true: The Validator automatically repairs all Issues found");
+        }
+
+        public static void printOptionPrintAllVal(bool CurrentValue)
+        {
+            Console.Clear();
+            Console.WriteLine("What should be the new Value?");
+            Console.WriteLine("Current Value :" + CurrentValue.ToString());
+            Console.WriteLine("Possible Values: ");
+            Console.WriteLine(" - false (default): The Validator does not print all Elements");
+            Console.WriteLine(" - true: The Validator prints all found Elements");
         }
     }
 }

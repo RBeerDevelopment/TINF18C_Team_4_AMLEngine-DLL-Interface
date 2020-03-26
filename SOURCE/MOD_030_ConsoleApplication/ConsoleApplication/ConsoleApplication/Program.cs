@@ -48,9 +48,9 @@ namespace ConsoleApplication
             try
             {
                 string path = "";
+                Options CurrentOptions = new Options();
 
-                // Contstructor with loglevel
-                Validator validator = new Validator(1);
+                Validator ValidatorInstance = new Validator();
                 PrintHelper.welcome();
 
                 bool loop = true;
@@ -68,7 +68,7 @@ namespace ConsoleApplication
                             CAEXDocument CDokument = LoadFile(ref path);
                             Console.WriteLine(path);
                             if (CDokument != null)
-                                validator.validate(CDokument, path);
+                                ValidatorInstance.validate(CDokument, path, ref CurrentOptions);
                             break;
 
                         case "COMPRESS":
@@ -76,6 +76,9 @@ namespace ConsoleApplication
                             break;
                         case "DECOMPRESS":
                             AMLXDeCompress();
+                            break;
+                        case "OPTIONS":
+                            EditOptions(ref CurrentOptions);
                             break;
                         case "EXIT":
                         case "QUIT":
@@ -168,6 +171,59 @@ namespace ConsoleApplication
             else
                 return CAEXDocument.LoadFromFile(AMLFile);  
 
+        }
+        private static void EditOptions(ref Options CurrentOptions)
+        {
+            bool Continue = true;
+            do
+            {
+                PrintHelper.printOptions();
+                string SelectedOption = Console.ReadLine().ToUpper();
+                switch (SelectedOption)
+                {
+                    case "":
+                    case "EXIT":
+                    case "QUIT":
+                        Continue = false;
+                        break;
+                    case "AUTOREPAIR":
+                        PrintHelper.printOptionAutoRepair(CurrentOptions.AutoRepair);
+                        try
+                        {
+                            CurrentOptions.AutoRepair = bool.Parse(Console.ReadLine());
+                        }
+                        catch (Exception)
+                        {
+                            PrintHelper.println("Invalid Value. Did not Change Config", ConsoleColor.Red);
+                        }
+                        Console.WriteLine("Do you want to Edit another Value?");
+                        if (Console.ReadLine().ToUpper() == "NO")
+                            Continue = false;
+                        break;
+                    case "PRINTALLVAL":
+                        PrintHelper.printOptionAutoRepair(CurrentOptions.PrintAllVal);
+                        try
+                        {
+                            CurrentOptions.PrintAllVal = bool.Parse(Console.ReadLine());
+                        }
+                        catch (Exception)
+                        {
+                            PrintHelper.println("Invalid Value. Did not Change Config", ConsoleColor.Red);
+                        }
+                        Console.WriteLine("Do you want to Edit another Value?");
+                        if (Console.ReadLine().ToUpper() == "NO")
+                            Continue = false;
+                        break;
+                    default:
+                        Console.WriteLine("This Option does not Exist.");
+                        Console.WriteLine("Do you want to try again?");
+                        if (Console.ReadLine().ToUpper() == "NO")
+                            Continue = false;
+                        break;
+                }
+            } while (Continue);
+            Console.Clear();
+            PrintHelper.Exit("Redirecting to Main Menu");
         }
     }
 }
