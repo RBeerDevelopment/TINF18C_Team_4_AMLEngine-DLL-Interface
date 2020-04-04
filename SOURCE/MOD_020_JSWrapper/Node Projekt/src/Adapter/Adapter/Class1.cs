@@ -33,14 +33,19 @@ namespace Adapter
              */
 
 
-            /** 
+            /** TODO
              *                     
-            * TODO: METHOD CHECK FOR ALL PARAMETERS NEEDED //ggf. Internal element hinzufügen, checken ob benötigt??? https://stackoverflow.com/questions/2839598/how-to-detect-if-a-property-exists-on-an-expandoobject
-             * 
-             * 
              * // TRAVERSING ??? -> no use case???
+             ** SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.
+                     * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
+                     * InternalLinks                                                                                
+                     * SEARCHING / QUERYING IN DOCUMENT ????                                                                        MHM
+                     * Transformation of an AML document to a higher version using the CAEXSchemaTransformer.                       NO
+                     * 
              * 
              */
+            if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
+                return "function_name and path expected";
 
             Console.WriteLine($"Calling function {payload.function_name}");
             Console.WriteLine($"Path to CAEX {payload.path}");
@@ -72,6 +77,9 @@ namespace Adapter
 
 
                 case "INSTANCEHIERARCHY_APPEND":
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "instance", "path" }))
+                        return "instance: name for the instance expected";
+
                     var hierarchyInstanceName = payload.instance;
 
                     // only string or Array of Tupels (key,value)
@@ -79,39 +87,39 @@ namespace Adapter
 
 
 
-                    if (((IDictionary<String, object>)payload).ContainsKey("internalelement"))
-                    {
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, "internalelement"))
                         hierarchyInstance.InternalElement.Append(payload.internalelement);
-                    }
+
 
                     output.result = $"Created instance hierarchy {hierarchyInstanceName} on file";
                     break;
 
                 case "INSTANCEHIERARCHY_GET":
-
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
+                        return "indexer expected: name for the indexer to return";
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
 
                     var indexer = payload.indexer;
 
-                    // WORKING ????
+                    // WORKING ???? maybe tostring
                     output.result = caex.CAEXFile.InstanceHierarchy[indexer];
 
                     break;
 
 
-            
-                    /*
-                     * @Markus
-                     * die Rückgabe ist ein String:
-                     *          Aufbau:   Ein Fehler -> Infos getrennt durch "|" 
-                     *                   Fehler sind getrennt durch "//"
-                     *                   
-                     *          => Zumindest so geplannt :D
-                     *          **/
+
+                /*
+                 * @Markus
+                 * die Rückgabe ist ein String:
+                 *          Aufbau:   Ein Fehler -> Infos getrennt durch "|" 
+                 *                   Fehler sind getrennt durch "//"
+                 *                   
+                 *          => Zumindest so geplannt :D
+                 *          **/
                 case "VALIDATE":
                     var validator = new Validator();
 
-                    output.result=validator.validate(caex, payload.path);
+                    output.result = validator.validate(caex, payload.path);
                     break;
 
                 case "REPAIR":
@@ -122,26 +130,17 @@ namespace Adapter
 
 
                 case "CREATE CLASS / SUBCLASS / InternalLinks usw.":
-                    /*
-                     * SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.
-                     * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
-                     * InternalLinks                                                                                
-                     * SEARCHING / QUERYING IN DOCUMENT ????                                                                        MHM
-                     * Transformation of an AML document to a higher version using the CAEXSchemaTransformer.                       NO
-                     * 
-                     * **/
-
-
                     output.result = "NOT IMPLEMENTED YET, MAYBE NEVER, WHO KNOWS";
 
                     break;
 
                 default:
-                    break;
+                    return $"Switch does not know about that the job {payload.function_name}";
+                    //break;
             }
 
 
-            caex.SaveToFile(@payload.path,true);
+            caex.SaveToFile(@payload.path, true);
 
             return output;
         }
