@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="CaexOpener.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="GlobalHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Validator.cs" />
   </ItemGroup>
