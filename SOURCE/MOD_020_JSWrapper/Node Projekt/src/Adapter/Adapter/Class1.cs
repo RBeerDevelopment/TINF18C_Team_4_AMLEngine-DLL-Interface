@@ -20,80 +20,130 @@ namespace Adapter
     {
         public async Task<object> Invoke(dynamic payload)
         {
-            Console.WriteLine($"Calling function {payload.name}");
-            Console.WriteLine($"With {payload.input}");
+            /**
+             * payload structure:
+             *      payload.function_name   : function name to call, see switch for more
+             *      
+             *      payload.path            : path to caex document ?
+             *      
+             *      
+             *output structure:
+             *      output.result           : string -> the result of the action
+             * 
+             */
 
 
-            dynamic output=new object();
+            /** 
+             *                     
+            * TODO: METHOD CHECK FOR ALL PARAMETERS NEEDED //ggf. Internal element hinzufügen, checken ob benötigt??? https://stackoverflow.com/questions/2839598/how-to-detect-if-a-property-exists-on-an-expandoobject
+             * 
+             * 
+             * // TRAVERSING ??? -> no use case???
+             * 
+             */
 
-            switch (((string)payload.name).ToUpper())
+            Console.WriteLine($"Calling function {payload.function_name}");
+            Console.WriteLine($"Path to CAEX {payload.path}");
+
+
+            //output to give back
+            dynamic output = new object();
+
+            // global caex document to work with
+            CAEXDocument caex = CaexOpener.OpenCaexSafe(@payload.path);
+
+            if (caex == null)
+            {
+                output.result = "Cannot open file, ERROR occured";
+                Console.WriteLine("Stopping c# programm...");
+
+                output.result = "Cannot open file, ERROR occured";
+                return output;
+            }
+
+
+            switch ((payload.function_name as string).ToUpper())
             {
                 case "CREATETESTFILE":
                     var caexDocument = CAEXDocument.New_CAEXDocument();
                     caexDocument.SaveToFile("build/Lucas_ist_ein_doofi.aml", true);
-                    break;
-
-                case "LOADFROMFILE":
-                    var filepath = (string)payload.filepath;
-                    caexDocument = CAEXDocument.LoadFromFile(filepath);
-
-                    output.caexdocument = caexDocument;
-                    break;
-
-                case "SAVETOFILE":
-                    filepath = payload.filepath;
-                    caexDocument = payload.caex;
-                    caexDocument.SaveToFile(filepath, true);
+                    output.result = "Created test file in build/Lucas_ist_ein_doofi.aml";
                     break;
 
 
                 case "INSTANCEHIERARCHY_APPEND":
                     var hierarchyInstanceName = payload.instance;
 
-                    caexDocument = payload.caex;
-                    
-                    // nur Name oder Array von Tupel (key,value) hinten rein
-                    var hierarchyInstance=caexDocument.CAEXFile.InstanceHierarchy.Append(hierarchyInstanceName);
+                    // only string or Array of Tupels (key,value)
+                    var hierarchyInstance = caex.CAEXFile.InstanceHierarchy.Append(hierarchyInstanceName);
 
 
-                    //ggf. Internal element hinzufügen, checken ob benötigt??? https://stackoverflow.com/questions/2839598/how-to-detect-if-a-property-exists-on-an-expandoobject
 
                     if (((IDictionary<String, object>)payload).ContainsKey("internalelement"))
                     {
                         hierarchyInstance.InternalElement.Append(payload.internalelement);
                     }
+
+                    output.result = $"Created instance hierarchy {hierarchyInstanceName} on file";
                     break;
 
                 case "INSTANCEHIERARCHY_GET":
-                    caexDocument = payload.caex;
 
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
-                    var indexer = payload.getValue;
 
-                    output.hierarchyinstance = caexDocument.CAEXFile.InstanceHierarchy[indexer];
+                    var indexer = payload.indexer;
+
+                    // WORKING ????
+                    output.result = caex.CAEXFile.InstanceHierarchy[indexer];
 
                     break;
 
-                // TRAVERSING ???
-                //REPAIR ???
+
+            
+                    /*
+                     * @Markus
+                     * die Rückgabe ist ein String:
+                     *          Aufbau:   Ein Fehler -> Infos getrennt durch "|" 
+                     *                   Fehler sind getrennt durch "//"
+                     *                   
+                     *          => Zumindest so geplannt :D
+                     *          **/
+                case "VALIDATE":
+                    var validator = new Validator();
+
+                    output.result=validator.validate(caex, payload.path);
+                    break;
+
+                case "REPAIR":
+                    validator = new Validator();
+
+                    output.result = validator.validate_and_repair(caex, payload.path);
+                    break;
 
 
-                    //var myIH = document.CAEXFile.InstanceHierarchy.Append("myIH");
+                case "CREATE CLASS / SUBCLASS / InternalLinks usw.":
+                    /*
+                     * SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.
+                     * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
+                     * InternalLinks                                                                                
+                     * SEARCHING / QUERYING IN DOCUMENT ????                                                                        MHM
+                     * Transformation of an AML document to a higher version using the CAEXSchemaTransformer.                       NO
+                     * 
+                     * **/
 
 
-                    default:
+                    output.result = "NOT IMPLEMENTED YET, MAYBE NEVER, WHO KNOWS";
+
+                    break;
+
+                default:
                     break;
             }
 
 
-            if (payload.name == "createTestFile")
-            {
-                var caexDocument = CAEXDocument.New_CAEXDocument();
-                caexDocument.SaveToFile("build/Lucas_ist_ein_doofi.aml", true);
-            }
-            //CAEXDocument.LoadFromFile;
+            caex.SaveToFile(@payload.path,true);
 
-            return true;
+            return output;
         }
     }
 }
