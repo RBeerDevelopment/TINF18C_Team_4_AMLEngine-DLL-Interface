@@ -100,12 +100,23 @@ namespace Adapter
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
 
                     var indexer = payload.indexer;
-
+                    var hierarchy = getInstanceHierarchy(indexer);
                     // WORKING ???? maybe tostring
-                    output.result = caex.CAEXFile.InstanceHierarchy[indexer];
+                    output.result = hierarchy;
 
                     break;
 
+                // TODO: Test this case
+                case "INSTANCEELEMENT_APPEND":
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
+                        {return "indexer expected: name for the indexer to return";}
+                    else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "inElement")) {
+                        return "instance element expected: name for the new element to append";
+                    }
+                    var indexer = payload.indexer;
+                    var hierarchy = getInstanceHierarchy(indexer);
+                    hierarchy.InternalElement.Append();
+                    break;
 
 
                 /*
@@ -136,13 +147,16 @@ namespace Adapter
 
                 default:
                     return $"Switch does not know about that the job {payload.function_name}";
-                    //break;
+                    
             }
-
 
             caex.SaveToFile(@payload.path, true);
 
             return output;
+        }
+
+        private InstanceHierarchy getInstanceHierarchy(var indexer) {
+            return caex.CAEXFile.InstanceHierarchy[indexer];
         }
     }
 }
