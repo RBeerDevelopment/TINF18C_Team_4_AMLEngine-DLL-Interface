@@ -100,7 +100,7 @@ namespace Adapter
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
 
                     var indexer = payload.indexer;
-                    var hierarchy = getInstanceHierarchy(indexer);
+                    var hierarchy = getInstanceHierarchy(indexer,caex);
                     // WORKING ???? maybe tostring
                     output.result = hierarchy;
 
@@ -113,8 +113,8 @@ namespace Adapter
                     else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "inElement")) {
                         return "instance element expected: name for the new element to append";
                     }
-                    var indexer = payload.indexer;
-                    var hierarchy = getInstanceHierarchy(indexer);
+                    indexer = payload.indexer;
+                    hierarchy = getInstanceHierarchy(indexer,caex);
                     hierarchy.InternalElement.Append();
                     break;
 
@@ -155,7 +155,8 @@ namespace Adapter
             return output;
         }
 
-        private InstanceHierarchy getInstanceHierarchy(var indexer) {
+        private InstanceHierarchyType getInstanceHierarchy(string indexer,CAEXDocument caex)
+        {
             return caex.CAEXFile.InstanceHierarchy[indexer];
         }
     }
