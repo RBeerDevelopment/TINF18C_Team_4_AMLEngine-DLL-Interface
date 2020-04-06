@@ -34,15 +34,10 @@ namespace Adapter
 
 
             /** TODO
-             *                     
-             * // TRAVERSING ??? -> no use case???
-             ** SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.
+             ** SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.               
                      * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
-                     * InternalLinks                                                                                
-                     * SEARCHING / QUERYING IN DOCUMENT ????                                                                        MHM
-                     * Transformation of an AML document to a higher version using the CAEXSchemaTransformer.                       NO
-                     * 
-             * 
+                     * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
+                     * change data in instance hierarchy
              */
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
                 return "function_name and path expected";
