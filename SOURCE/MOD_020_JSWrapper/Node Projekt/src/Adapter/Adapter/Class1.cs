@@ -34,10 +34,10 @@ namespace Adapter
 
 
             /** TODO
-             ** SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern
-                     * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
-                     * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
-                     * change data in instance hierarchy
+             *  * SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern
+                * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
+                * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
+                * change data in instance hierarchy
              */
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
                 return "function_name and path expected";
@@ -146,6 +146,39 @@ namespace Adapter
                     }
 
                     break;
+
+
+                /*
+                 * Requried:           payload.interface_classname
+                 *  
+                 * Optional:            payload.iface_name
+                 * **/
+                case "CREATE_INTERFACECLASS":
+
+                    if (GlobalHelper.dynamicPayloadHasKeys(payload, "interface_classname"))
+                    {
+                        var iface_classname = payload.interface_classname;
+                        var iface_class = caex.CAEXFile.InterfaceClassLib.Append(iface_classname);
+
+                        if (GlobalHelper.dynamicPayloadHasKeys(payload, "iface_name"))
+                        {
+                            var iface_name = payload.iface_name;
+                            var iface = iface_class.InterfaceClass.Append(iface_name);
+
+                            output.result = $"Created Interface-class {iface_classname} and Interface {iface_name}";
+                        }
+                        else
+                        {
+                            output.result = $"Created Interface-class {iface_classname}";
+                        }
+                    }
+                    else
+                    {
+                        return "missing fields";
+                    }
+
+                    break;
+
 
                 // TODO: Test this case
                 case "INSTANCEELEMENT_APPEND":
