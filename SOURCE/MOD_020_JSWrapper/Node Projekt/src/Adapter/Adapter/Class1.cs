@@ -34,8 +34,8 @@ namespace Adapter
 
 
             /** TODO
-             *  * SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern
-                * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
+             *  * SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern   |=> Die frage ist, ob man die Hierarchie irgendwie zurück geben kann
+                * InterfaceClassLib -> Rückgabe wert überprüfen / Verbessern    |=>
                 * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
                 * change data in instance hierarchy
              */
