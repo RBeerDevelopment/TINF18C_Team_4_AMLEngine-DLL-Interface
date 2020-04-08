@@ -34,7 +34,7 @@ namespace Adapter
 
 
             /** TODO
-             ** SystemUnitClassLib -> Application of instantiation of a SystemUnitClass to insert an InternalElement.               
+             ** SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern
                      * InterfaceClassLib -> Creation of class to class relations using AutomationML Base Classes. 
                      * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
                      * change data in instance hierarchy
@@ -95,21 +95,68 @@ namespace Adapter
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
 
                     var indexer = payload.indexer;
-                    var hierarchy = getInstanceHierarchy(indexer,caex);
+                    var hierarchy = getInstanceHierarchy(indexer, caex);
                     // WORKING ???? maybe tostring
                     output.result = hierarchy;
+
+                    break;
+
+
+                /*
+                 * Requried:           payload.unitclasslib_name
+                 * 
+                 * Optional:                payload.unitclass_name
+                 *                          payload.indexer             => where to put the new class
+                 * 
+                 * **/
+                case "CREATE_SYSTEMUNITCLASS":
+
+                    if (GlobalHelper.dynamicPayloadHasKeys(payload, "unitclasslib_name"))
+                    {
+                        var lib_name = payload.unitclasslib_name;
+                        var slib = caex.CAEXFile.SystemUnitClassLib.Append(lib_name);
+
+                        if (GlobalHelper.dynamicPayloadHasKeys(payload, "unitclass_name"))
+                        {
+                            var class_name = payload.unitclass_name;
+                            var uclass = slib.SystemUnitClass.Append(class_name);
+
+                            if (GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
+                            {
+                                indexer = payload.indexer;
+                                hierarchy = getInstanceHierarchy(indexer, caex);
+
+                                var new_hierarchy = hierarchy.Insert(uclass.CreateClassInstance());
+                                output.result = $"Created UnitclassLib {lib_name}, created systemunitclass {class_name} and attached to hierarchy{indexer}";
+                            }
+                            else
+                            {
+                                output.result = $"Created UnitclassLib {lib_name} and created systemunitclass {class_name}";
+                            }
+
+                        }
+                        else
+                        {
+                            output.result = $"Created UnitclassLib {lib_name}";
+                        }
+                    }
+                    else
+                    {
+                        return "missing field, unitclasslib_name";
+                    }
 
                     break;
 
                 // TODO: Test this case
                 case "INSTANCEELEMENT_APPEND":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
-                        {return "indexer expected: name for the indexer to return";}
-                    else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "inElement")) {
+                    { return "indexer expected: name for the indexer to return"; }
+                    else if (!GlobalHelper.dynamicPayloadHasKeys(payload, "inElement"))
+                    {
                         return "instance element expected: name for the new element to append";
                     }
                     indexer = payload.indexer;
-                    hierarchy = getInstanceHierarchy(indexer,caex);
+                    hierarchy = getInstanceHierarchy(indexer, caex);
                     hierarchy.InternalElement.Append();
                     break;
 
@@ -142,7 +189,7 @@ namespace Adapter
 
                 default:
                     return $"Switch does not know about that the job {payload.function_name}";
-                    
+
             }
 
             caex.SaveToFile(@payload.path, true);
@@ -150,7 +197,7 @@ namespace Adapter
             return output;
         }
 
-        private InstanceHierarchyType getInstanceHierarchy(string indexer,CAEXDocument caex)
+        private InstanceHierarchyType getInstanceHierarchy(string indexer, CAEXDocument caex)
         {
             return caex.CAEXFile.InstanceHierarchy[indexer];
         }
