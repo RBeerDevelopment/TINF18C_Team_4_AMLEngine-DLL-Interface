@@ -30,7 +30,7 @@ namespace ConsoleApplication
                 // Finally Close File
                 container.Close();
 
-                Console.WriteLine("Sucessfully Created AMLX-File");
+                PrintHelper.printCentredLine("Sucessfully Created AMLX-File \n \n");
             }
             catch (Exception e)
             {
@@ -48,19 +48,19 @@ namespace ConsoleApplication
             {
                 var container = new Aml.Engine.AmlObjects.AutomationMLContainer(file_path_src);
                 container.ExtractAllFiles(folder_path_target);
-                Console.WriteLine("\nSuccessfully Extracted Files");
+                PrintHelper.printCentredLine("\nSuccessfully Extracted Files");
             }
             catch (IOException ex)
             {
-                Console.WriteLine($"Error occured ( {ex})");
-                Console.WriteLine("\n Cannot find file..");
+                PrintHelper.println($"Error occured ( {ex})", ConsoleColor.Red);
+                PrintHelper.println("\n Cannot find file..", ConsoleColor.Red);
             }
             catch (Exception e)
             {
                 Console.WriteLine("Exception: " + e.ToString());
-                PrintHelper.println("Could not Extract Files", ConsoleColor.Red);
+                PrintHelper.println("\nCould not Extract Files", ConsoleColor.Red);
             }
-            PrintHelper.Exit("\nReturning to Main Menu");
+            PrintHelper.Exit("\n\nReturning to Main Menu");
         }
     }
 }

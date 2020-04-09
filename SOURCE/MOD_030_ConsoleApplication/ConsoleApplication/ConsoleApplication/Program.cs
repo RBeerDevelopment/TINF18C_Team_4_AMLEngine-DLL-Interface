@@ -65,6 +65,7 @@ namespace ConsoleApplication
                     {
                         case "VALIDATE":
                             //validate file
+                            Console.Clear();
                             CAEXDocument CDokument = LoadFile(ref path);
                             Console.WriteLine(path);
                             if (CDokument != null)
@@ -113,12 +114,12 @@ namespace ConsoleApplication
             List<string> FilesToAdd = new List<string>();
             PrintHelper.DeCompressor_Choosage(true);
 
-            Console.WriteLine("What is your Input AML-File?\n");
+            PrintHelper.printCentredLine("What is your Input AML-File?\n\n");
             sourceAMLFile = PrintHelper.GetFile("AML-File","*.AML");
             if (String.IsNullOrEmpty(sourceAMLFile))
                 return;
 
-            Console.WriteLine("Do you want to add another File?(Yes/No)");
+            PrintHelper.printCentredLine("Do you want to add another File?(Yes/No)\n\n");
             AnotherFile = Console.ReadLine().ToUpper() == "YES";
             while(AnotherFile)
             {
@@ -126,14 +127,14 @@ namespace ConsoleApplication
                 if (!String.IsNullOrEmpty(newFile))
                 {
                     FilesToAdd.Add(newFile);
-                    Console.WriteLine("Do you want to add more Files?(Yes/No)");
+                    PrintHelper.printCentredLine("Do you want to add more Files?(Yes/No)\n\n");
                     AnotherFile = Console.ReadLine().ToUpper() == "YES";
                 }
                 else
                     break;
             }
 
-            Console.WriteLine("Where do you want to save the Output?\n");
+            PrintHelper.printCentredLine("Where do you want to save the Output?\n\n\n");
             target = PrintHelper.GetDirectory();
             if (String.IsNullOrEmpty(target))
                 return;
@@ -145,12 +146,12 @@ namespace ConsoleApplication
             string src, target;
             PrintHelper.DeCompressor_Choosage(false);
 
-            Console.WriteLine("What is your Input?\n");
+            PrintHelper.printCentredLine("What is your Input?\n\n");
             src = PrintHelper.GetFile("AMLX-File", "*.AMLX");
             if (String.IsNullOrEmpty(src) || (Path.GetExtension(src).ToUpper() != ".AMLX"))
                 return;
 
-            Console.WriteLine("Where do you want to save the Output?\n");
+            PrintHelper.printCentredLine("Where do you want to save the Output?\n\n");
             target = PrintHelper.GetDirectory();
             if (String.IsNullOrEmpty(target))
                 return;
@@ -159,10 +160,11 @@ namespace ConsoleApplication
 
         private static CAEXDocument LoadFile(ref string AMLFile)
         {
+            PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
             if (String.IsNullOrEmpty(AMLFile))
             {
                 // Ask for File
-                Console.WriteLine("Which File do you want to validate?");
+                PrintHelper.printCentredLine("Which File do you want to validate?\n");
                 AMLFile = PrintHelper.GetFile("AML-File", "*.AML");
             }
             // look up input is actual file
@@ -175,6 +177,7 @@ namespace ConsoleApplication
         private static void EditOptions(ref Options CurrentOptions)
         {
             bool Continue = true;
+            bool ExceptionHappend = false;
             do
             {
                 PrintHelper.printOptions();
@@ -194,9 +197,18 @@ namespace ConsoleApplication
                         }
                         catch (Exception)
                         {
-                            PrintHelper.println("Invalid Value. Did not Change Config", ConsoleColor.Red);
+                            Console.Clear();
+                            PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
+                            PrintHelper.println("Invalid Value. Did not Change Config\n\n", ConsoleColor.Red);
+                            ExceptionHappend = true;
                         }
-                        Console.WriteLine("Do you want to Edit another Value?");
+                        if(!ExceptionHappend)
+                        {
+                            Console.Clear();
+                            PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
+                        }
+                        Console.WriteLine("Do you want to Edit another Value? (Yes/No)\n");
+                        PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
                         if (Console.ReadLine().ToUpper() == "NO")
                             Continue = false;
                         break;
@@ -208,15 +220,27 @@ namespace ConsoleApplication
                         }
                         catch (Exception)
                         {
-                            PrintHelper.println("Invalid Value. Did not Change Config", ConsoleColor.Red);
+                            Console.Clear();
+                            PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
+                            PrintHelper.println("Invalid Value. Did not Change Config\n\n", ConsoleColor.Red);
+                            ExceptionHappend = true;
                         }
-                        Console.WriteLine("Do you want to Edit another Value?");
+                        if (!ExceptionHappend)
+                        {
+                            Console.Clear();
+                            PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
+                        }
+                        Console.WriteLine("Do you want to Edit another Value? (Yes/No)\n");
+                        PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
                         if (Console.ReadLine().ToUpper() == "NO")
                             Continue = false;
                         break;
                     default:
-                        Console.WriteLine("This Option does not Exist.");
-                        Console.WriteLine("Do you want to try again?");
+                        Console.Clear();
+                        PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
+                        PrintHelper.printCentredLine("This Option does not Exist.\n\n");
+                        PrintHelper.printCentredLine("Do you want to try again? (Yes/No)\n\n");
+                        PrintHelper.printCentredLine(PrintHelper.line() + "\n\n");
                         if (Console.ReadLine().ToUpper() == "NO")
                             Continue = false;
                         break;

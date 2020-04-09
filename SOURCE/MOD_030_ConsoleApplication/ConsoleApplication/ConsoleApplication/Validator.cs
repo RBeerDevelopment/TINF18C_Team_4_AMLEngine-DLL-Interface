@@ -34,7 +34,7 @@ namespace ConsoleApplication
                     print_Error(enumerator.Current);
 
                     if (!CurrentOptions.AutoRepair)
-                        PrintHelper.println("\nType yes for repairing option", ConsoleColor.Yellow);
+                        PrintHelper.println("Type yes to repair the error\n\n", ConsoleColor.Yellow);
 
                     // try reparing
                     if (CurrentOptions.AutoRepair || Console.ReadLine().ToUpper().Trim() == "YES")
@@ -42,7 +42,7 @@ namespace ConsoleApplication
                         // start reparing
                         FileChanged = true;
                         service.Repair(enumerator.Current);
-                        PrintHelper.println($"Repair results:  {enumerator.Current.RepairResult}", ConsoleColor.Cyan);
+                        PrintHelper.println($"Repair results:  {enumerator.Current.RepairResult}\n\n", ConsoleColor.Cyan);
 
                     }
                 }
@@ -50,30 +50,31 @@ namespace ConsoleApplication
                 // no Errors in mistake
                 if (enumerator.Current == null)
                 {
-                    PrintHelper.println("No errors found", ConsoleColor.Green);
+                    Console.WriteLine("\n\n");
+                    PrintHelper.println("No errors found\n\n", ConsoleColor.Green);
                 }
                 else if (FileChanged)
                 {
 
-                    PrintHelper.println("Override file (yes/no) ?", this.default_foreground);
+                    PrintHelper.println("Override file ? (Yes/No)\n\n", this.default_foreground);
 
                     // if override file
                     if (Console.ReadLine().ToUpper().Trim() == "YES")
                     {
                         doc.SaveToFile(path, true);
 
-                        PrintHelper.println($"saved to file {path}", ConsoleColor.Cyan);
+                        PrintHelper.println($"saved to file {path}\n\n", ConsoleColor.Cyan);
                     }
                     else
                     {
                         // save to new file
-                        Console.WriteLine("Please insert the Path for the File you want to save:");
+                        PrintHelper.printCentredLine("Please insert the Path for the File you want to save:\n\n");
                         string new_path = PrintHelper.GetDirectory();
                         // Only when User entered a valid Path
                         if (!String.IsNullOrEmpty(new_path))
                         {
                             doc.SaveToFile(new_path, true);
-                            PrintHelper.println($"saved to file {new_path}", ConsoleColor.Cyan);
+                            PrintHelper.println($"saved to file {new_path}\n\n", ConsoleColor.Cyan);
                         }
                     }
                 }
@@ -81,8 +82,8 @@ namespace ConsoleApplication
             }
             catch(Exception e)
             {
-                Console.WriteLine("Exception: " + e.ToString());
-                PrintHelper.println("Could Validate File", ConsoleColor.Red);
+                Console.WriteLine("Exception: " + e.ToString() + "\n\n");
+                PrintHelper.println("Couldn't Validate File\n\n", ConsoleColor.Red);
             }
             PrintHelper.Exit("Returning to Main Menu");
 
@@ -90,23 +91,24 @@ namespace ConsoleApplication
 
         private void print_Error(ValidationElement validationElement)
         {
-            PrintHelper.println("Found Error", ConsoleColor.Red);
+            Console.WriteLine("\n\n");
+            PrintHelper.println("Found Error\n\n", ConsoleColor.Red);
 
             if (!String.IsNullOrEmpty(validationElement.LongDescription))
             {
-                PrintHelper.println($"{validationElement.LongDescription}", ConsoleColor.Yellow);
+                PrintHelper.println($"{validationElement.LongDescription}\n", ConsoleColor.Yellow);
             }
             else
             {
                 PrintHelper.println($"Exception: {validationElement.ValidationInformation}", this.default_foreground);
             }
 
-            PrintHelper.println($"Error with attribute \"{validationElement.ValidatedAttribute}\" ", this.default_foreground);
+            PrintHelper.println($"Error with attribute \"{validationElement.ValidatedAttribute}\" \n", this.default_foreground);
 
             PrintHelper.println($"Options for reparing \"{validationElement.AvailableRepairOptions}\" \n", ConsoleColor.Green);
 
-            PrintHelper.println("Error in element:", this.default_foreground);
-            PrintHelper.println($"{PrintHelper.line()} \n{validationElement.Element}\n{PrintHelper.line()} \n", ConsoleColor.Blue);
+            PrintHelper.println("Error in element: \n", this.default_foreground);
+            PrintHelper.println($"{PrintHelper.line()} \n{validationElement.Element}\n{PrintHelper.line()} \n\n", ConsoleColor.Blue);
         }
 
         private void printALLData_for_ValidationElement(ValidationElement validationElement)
