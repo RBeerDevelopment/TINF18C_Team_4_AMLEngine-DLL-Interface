@@ -1,14 +1,16 @@
 var edge = require('edge-js');
 var adapter = edge.func('./dlls/Adapter.dll');
 
-function call(name, input, callback = null) {
-    adapter({name: name, input: input}, function (error, result) {
+function call(functionName, input, callback = null) {
+    console.log({function_name: functionName, ...input});
+    adapter({function_name: functionName, ...input}, function (error, result) {
         if (error) throw error;
         if (result) {
-            console.log("call was successful");
-
             if(callback) {
                 callback(result);
+            }
+            else {
+                return result;
             }
         }
     });
