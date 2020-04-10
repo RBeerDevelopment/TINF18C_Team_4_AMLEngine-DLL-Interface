@@ -64,13 +64,6 @@ namespace Adapter
 
             switch ((payload.function_name as string).ToUpper())
             {
-                case "CREATETESTFILE":
-                    var caexDocument = CAEXDocument.New_CAEXDocument();
-                    caexDocument.SaveToFile("build/Lucas_ist_ein_doofi.aml", true);
-                    output.result = "Created test file in build/Lucas_ist_ein_doofi.aml";
-                    break;
-
-
                 case "INSTANCEHIERARCHY_APPEND":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "instance", "path" }))
                         return "instance: name for the instance expected";
