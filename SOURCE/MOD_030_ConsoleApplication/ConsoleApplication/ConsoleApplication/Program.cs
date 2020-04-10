@@ -70,6 +70,8 @@ namespace ConsoleApplication
                             Console.WriteLine(path);
                             if (CDokument != null)
                                 ValidatorInstance.validate(CDokument, path, ref CurrentOptions);
+                            // Empty path for next Validation
+                            path = "";
                             break;
 
                         case "COMPRESS":
