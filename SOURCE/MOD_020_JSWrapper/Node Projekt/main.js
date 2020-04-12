@@ -5,4 +5,4 @@ function logResult(result) {
 }
 
 // Example call
-wrapper.call("createTestFile", "./build/Lucas_ist_ein_doofi.aml", {},logResult);
+wrapper.call("createTestFile", "./build/Lucas_ist_ein_doofi.aml", {}, logResult);
