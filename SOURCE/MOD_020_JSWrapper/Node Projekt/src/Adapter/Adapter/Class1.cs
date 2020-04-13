@@ -18,6 +18,7 @@ namespace Adapter
 
     public class Startup
     {
+
         public async Task<object> Invoke(dynamic payload)
         {
             /**
@@ -40,7 +41,7 @@ namespace Adapter
                 * change data in instance hierarchy
              */
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
-                return "function_name and path expected";
+                throw new Exception("Error: function_name and path expected");
 
             Console.WriteLine($"Calling function {payload.function_name}");
             Console.WriteLine($"Path to CAEX {payload.path}");
