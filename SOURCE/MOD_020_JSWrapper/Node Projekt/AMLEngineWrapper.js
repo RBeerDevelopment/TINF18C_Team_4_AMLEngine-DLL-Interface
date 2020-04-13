@@ -65,7 +65,20 @@ function createInterfaceClass(path, interfaceClassName, interfaceName = null, ca
     }
 }
 
+function appendInstanceElement(path, index, instanceElement, callback = null) {
+    call("instanceElement_append", path, {
+        indexer: index,
+        inElement: instanceElement
+    }, callback);
+}
 
+function validate(path, callback = null) {
+    call("validate", path, {}, callback);
+}
+
+function repair(path, callback = null) {
+    call("repair", path, {}, callback);
+}
 
 module.exports = {
     call,
@@ -74,4 +87,7 @@ module.exports = {
     getInstanceHierarchy,
     createSystemUnitClass,
     createInterfaceClass,
+    appendInstanceElement,
+    validate,
+    repair,
 };
