@@ -67,10 +67,6 @@ namespace Adapter
             Console.WriteLine(payload.function_name);
             switch ((payload.function_name as string).ToUpper())
             {
-                case "CHANGE_ELEMENT":
-                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, new[] {"element", "path"})) {
-                        throw new Exception("Error: element and path expected");
-                    }                                                                                                   
                 case "INSTANCEHIERARCHY_APPEND":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "instance", "path" }))
                         throw new Exception("Error: name for the instance expected");
@@ -174,25 +170,63 @@ namespace Adapter
                     }
                     else
                     {
-                        return "missing fields";
+                        throw new Exception("Error: missing fields");
                     }
 
                     break;
 
-
-                // TODO: Test this case
+                /*
+                 * This case appends a new element to an existing index
+                 * required parameters: payload.indexer, payload.inElement
+                 */ 
                 case "INSTANCEELEMENT_APPEND":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
-                    { return "indexer expected: name for the indexer to return"; }
+                    { throw new Exception("Error: name for the indexer is missing"); }
                     else if (!GlobalHelper.dynamicPayloadHasKeys(payload, "inElement"))
                     {
-                        return "instance element expected: name for the new element to append";
+                        throw new Exception("Error: instance element expected: name for the new element to append");
                     }
-                    indexer = payload.indexer;
-                    hierarchy = getInstanceHierarchy(indexer, caex);
-                    hierarchy.InternalElement.Append();
+                    var instanceHierarchy = getInstanceHierarchy(payload.indexer, caex); //get instancehierarchy
+                    var elementNew = payload.inElement;
+                    instanceHierarchy.InternalElement.Append(elementNew); //add new element
+                    output.result = $"Created new internal element named {payload.inElement}";
                     break;
 
+                /*
+                 * his case rewrited the contents of an element to the given data
+                 */
+                case "CHANGE_DATA":
+                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer")) {
+                        throw new Exception("Error: name for indexer is missing");
+                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
+                        throw new Exception("Error: no data found");
+                    }
+                    var indexer2 = payload.indexer;
+                    var hierarchy2 = getInstanceHierarchy(indexer2, caex);
+                    var dataToWrite2 = payload.data;
+                    var dataOld2 = hierarchy2.InternalElement;
+                    hierarchy2.InternalElement = dataToWrite2;
+                    if(dataOld2 != null) {
+                        output.result = $"Changed data from {dataOld2} to {dataToWrite2}.";   
+                    } else {
+                        output.result = $"Changed cell data to {dataToWrite2}";
+                    }
+                    break;
+                case "SEARCH_AND_CHANGE_CONTENT":
+                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, "searchWord")) {
+                        throw new Exception("Error: searchWord field was not found");
+                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
+                        throw new Exception("Error: data field was not found");
+                    }
+                    var searchWord = payload.searchWord;
+                    var dataToWrite3 = payload.data;
+                    var hierarchyIndex = searchForElement(searchWord, caex); // search for keyword
+                    if(hierarchyIndex == null) {
+                        throw new Exception("Error: Something went wrong with the search.");
+                    }
+                    var hierarchy3 = getInstanceHierarchy(hierarchyIndex, caex);
+                    writeToCell(dataToWrite3, hierarchy3); // write new data to cell
+                    break;
 
                 /*
                  * @Markus
@@ -203,9 +237,7 @@ namespace Adapter
                  *          => Zumindest so geplannt :D
                  *          **/
                 case "VALIDATE":
-                    Console.WriteLine("in writeline");
                     var validator = new Validator();
-                    Console.WriteLine("I am a test");
                     output.result = validator.validate(caex, payload.path);
                     break;
 
@@ -214,21 +246,47 @@ namespace Adapter
 
                     output.result = validator.validate_and_repair(caex, payload.path);
                     break;
-
-
-                case "CREATE CLASS / SUBCLASS / InternalLinks usw.":
-                    output.result = "NOT IMPLEMENTED YET, MAYBE NEVER, WHO KNOWS";
-
-                    break;
-
+                case "INTERNALLINKS":
+                    //trickle down
+                case "SUBCLASS":
+                    //trickle down
+                case "CREATE CLASS":
+                    //output.result = "NOT IMPLEMENTED YET, MAYBE NEVER, WHO KNOWS";
+                    throw new Exception("Error: The command you trying to use is not implemented");
+            
                 default:
-                    return $"Switch does not know about that the job {payload.function_name}";
+                    throw new Exception($"Error: Switch does not know about that the job {payload.function_name}");
 
             }
 
             caex.SaveToFile(@payload.path, true);
 
             return output;
+        }
+
+        private string writeToCell(string data, InstanceHierarchyType hierarchy) {
+            var dataOld = hierarchy.InternalElement;
+            //hierarchy.InternalElement. = data; || FIXME: Element ist schreibgeschützt, suche Methode zum Schreiben
+            if(dataOld != null) {
+                return $"Changed data from {dataOld} to {data}.";   
+            } else {
+                return $"Changed cell data to {data}";
+            }
+        }
+
+        private InstanceHierarchyType searchForElement(string element, CAEXDocument caex) {
+            foreach(var instanceHierarchy in caex.CAEXFile.InstanceHierarchy) {
+                if(instanceHierarchy.InternalElement.ElementName == element) {
+                    return instanceHierarchy;
+                }
+                //foreach(var internalElement in instanceHierarchy.InternalElement) {
+                    //if(internalElement == element) {
+                    //    return internalElement.instanceHierarchy; // dont know, if possible?
+                  //  }                       
+                //}
+
+            }
+            throw new Exception("element not found!");
         }
 
         private InstanceHierarchyType getInstanceHierarchy(string indexer, CAEXDocument caex)
