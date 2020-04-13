@@ -19,10 +19,6 @@ function call(functionName, path, input = {}, callback = null) {
 // Usage examples of all supported functions
 // Also allows a developer to look through all supported functions using code completion
 
-function createTestFile(path, callback = null) {
-    call("createTestFile", path, {}, callback);
-}
-
 function appendToInstanceHierarchy(path, instanceName, internalElement, callback = null) {
     call("instanceHierarchy_Append", path, {
         instance: instanceName,
@@ -72,6 +68,20 @@ function appendInstanceElement(path, index, instanceElement, callback = null) {
     }, callback);
 }
 
+function changeData(path, index, data, callback = null) {
+    call("change_data", path, {
+        indexer: index,
+        data: data
+    }, callback);
+}
+
+function searchAndChangeContent(path, searchWord, data, callback = null) {
+    call("search_and_change_content", path, {
+        searchWord: searchWord,
+        data: data
+    }, callback);
+}
+
 function validate(path, callback = null) {
     call("validate", path, {}, callback);
 }
@@ -82,12 +92,13 @@ function repair(path, callback = null) {
 
 module.exports = {
     call,
-    createTestFile,
     appendToInstanceHierarchy,
     getInstanceHierarchy,
     createSystemUnitClass,
     createInterfaceClass,
     appendInstanceElement,
+    changeData,
+    searchAndChangeContent,
     validate,
     repair,
 };
