@@ -37,10 +37,13 @@ namespace Adapter
              *  * SystemUnitClassLib -> Rückgabe wert überprüfen / Verbessern   |=> Die frage ist, ob man die Hierarchie irgendwie zurück geben kann
                 * InterfaceClassLib -> Rückgabe wert überprüfen / Verbessern    |=>
                 * SEARCHING / QUERYING IN DOCUMENT ????  -> extra class                                                    Ja
-                * change data in instance hierarchy
+                * change data in instance hierarchy | element = null löscht Element
              */
+
+            Console.WriteLine("Testeroni"); // FIXME: Delete
+            //Console.WriteLine($"This is the payload function_name: {payload.function_name}");
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
-                return "function_name and path expected";
+                throw new Exception("Error: function_name and path expected");
 
             Console.WriteLine($"Calling function {payload.function_name}");
             Console.WriteLine($"Path to CAEX {payload.path}");
@@ -58,15 +61,19 @@ namespace Adapter
                 Console.WriteLine("Stopping c# programm...");
 
                 output.result = "Cannot open file, ERROR occured";
-                return output;
+                throw new Exception("Error: Cannot open file");
             }
 
-
+            Console.WriteLine(payload.function_name);
             switch ((payload.function_name as string).ToUpper())
             {
+                case "CHANGE_ELEMENT":
+                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, new[] {"element", "path"})) {
+                        throw new Exception("Error: element and path expected");
+                    }                                                                                                   
                 case "INSTANCEHIERARCHY_APPEND":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "instance", "path" }))
-                        return "instance: name for the instance expected";
+                        throw new Exception("Error: name for the instance expected");
 
                     var hierarchyInstanceName = payload.instance;
 
@@ -84,7 +91,7 @@ namespace Adapter
 
                 case "INSTANCEHIERARCHY_GET":
                     if (!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer"))
-                        return "indexer expected: name for the indexer to return";
+                        throw new Exception("Error: name for the indexer to return expected");
                     // int oder string oder Tupel (Name:"Version", Value:"1.0") auf Internes Element von Instanz
 
                     var indexer = payload.indexer;
@@ -135,7 +142,7 @@ namespace Adapter
                     }
                     else
                     {
-                        return "missing field, unitclasslib_name";
+                        throw new Exception("Error: unitclasslib_name is missing");
                     }
 
                     break;
@@ -196,8 +203,9 @@ namespace Adapter
                  *          => Zumindest so geplannt :D
                  *          **/
                 case "VALIDATE":
+                    Console.WriteLine("in writeline");
                     var validator = new Validator();
-
+                    Console.WriteLine("I am a test");
                     output.result = validator.validate(caex, payload.path);
                     break;
 

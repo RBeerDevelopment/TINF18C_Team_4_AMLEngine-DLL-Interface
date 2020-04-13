@@ -12,7 +12,7 @@ namespace Adapter
         {
             if (((IDictionary<String, object>)payload).ContainsKey(key))
                 return true;
-
+            Console.WriteLine($"The payload doesn't contain the {key} key");
             return false;
         }
         public static bool dynamicPayloadHasKeys(dynamic payload,Array parameter)
