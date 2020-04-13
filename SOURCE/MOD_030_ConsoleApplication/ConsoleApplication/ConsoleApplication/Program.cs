@@ -1,4 +1,5 @@
 ﻿using Aml.Engine.CAEX;
+using CommandLine;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -48,19 +49,61 @@ namespace ConsoleApplication
             try
             {
                 string path = "";
+                bool ContinueMainMenu = true;
                 Options CurrentOptions = new Options();
 
                 Validator ValidatorInstance = new Validator();
-                PrintHelper.welcome();
+                // First try Execution with Parameters
+                Parser.Default.ParseArguments<CommandLineOptions>(args)
+                    .WithParsed(options =>
+                    {
+                        if(!String.IsNullOrEmpty(options.path))
+                        {
+                            if (!File.Exists(@options.path) || !(Path.GetExtension(@options.path).ToUpper() == ".AML"))
+                            {
+                                // Path is not Valid or File is not an AML File
+                                PrintHelper.Exit("Please provide a valid path");
+                                ContinueMainMenu = false;
+                            }
+                            else if(!options.validate && !options.compress)
+                            {
+                                // No Defined Parameter given
+                                PrintHelper.Exit("Please provide either the Parameter --validate for validating or --compress for compressing");
+                                ContinueMainMenu = false;
+                            }
+                            else if(options.validate && options.compress)
+                            {
+                                // Too much Parameters given
+                                PrintHelper.Exit("Please just provide just --validate or --compress");
+                                ContinueMainMenu = false;
+                            }
+                            else
+                            {
+                                // Parameters are Valid
+                                if (options.validate)
+                                {
+                                    path = options.path;
+                                    //validate file
+                                    Console.Clear();
+                                    CAEXDocument CDokument = LoadFile(ref path);
+                                    Console.WriteLine(path);
+                                    if (CDokument != null)
+                                        ValidatorInstance.validate(CDokument, path, ref CurrentOptions);
+                                    // Empty path for next Validation
+                                    path = "";
+                                }
+                                else if (options.compress)
+                                {
+                                    AMLXCompress(@options.path);
+                                }
+                            }
+                        }
+                    });
 
-                bool loop = true;
-
-                while (loop)
+                while (ContinueMainMenu)
                 {
                     PrintHelper.loopExplanation();
 
-
-                    // TODO: Improve choose options
                     switch (Console.ReadLine().ToUpper())
                     {
                         case "VALIDATE":
@@ -85,7 +128,7 @@ namespace ConsoleApplication
                             break;
                         case "EXIT":
                         case "QUIT":
-                            loop = false;
+                            ContinueMainMenu = false;
                             break;
 
 
@@ -109,15 +152,19 @@ namespace ConsoleApplication
             }
         }
 
-        private static void AMLXCompress()
+        private static void AMLXCompress(string sourceAMLFile = "")
         {
-            string sourceAMLFile, target, newFile;
+            string target, newFile;
             bool AnotherFile;
             List<string> FilesToAdd = new List<string>();
             PrintHelper.DeCompressor_Choosage(true);
 
-            PrintHelper.printCentredLine("What is your Input AML-File?\n\n");
-            sourceAMLFile = PrintHelper.GetFile("AML-File","*.AML");
+            if (String.IsNullOrEmpty(sourceAMLFile))
+            {
+                PrintHelper.printCentredLine("What is your Input AML-File?\n\n");
+                sourceAMLFile = PrintHelper.GetFile("AML-File", "*.AML");
+            }
+            // User Aborted Compress
             if (String.IsNullOrEmpty(sourceAMLFile))
                 return;
 
@@ -251,5 +298,18 @@ namespace ConsoleApplication
             Console.Clear();
             PrintHelper.Exit("Redirecting to Main Menu");
         }
+    }
+
+    public class CommandLineOptions
+    {
+        // Path must be given expicitly or it doesnt accept a uppercase Letter
+        [Option(HelpText ="Insert path of your AML-File that you want to load", Default = null, Required = false)]
+        public string path { get; set; }
+
+        [Option(HelpText = "Validate the File in path", Default = false, Required = false)]
+        public bool validate { get; set; }
+
+        [Option(HelpText ="Compress the File in path", Default = false, Required = false)]
+        public bool compress { get; set; }
     }
 }
