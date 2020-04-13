@@ -31,8 +31,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="AML.Engine">
-      <HintPath>..\..\..\dlls\AML.Engine.dll</HintPath>
+    <Reference Include="AML.Engine, Version=1.3.6.0, Culture=neutral, PublicKeyToken=449e3551ddfecd2b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aml.Engine.1.3.6\lib\net4.7\AML.Engine.dll</HintPath>
+    </Reference>
+    <Reference Include="AML.Engine.Services, Version=1.3.6.0, Culture=neutral, PublicKeyToken=449e3551ddfecd2b, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aml.Engine.1.3.6\lib\net4.7\AML.Engine.Services.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -42,10 +45,19 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
+    <Reference Include="treelib, Version=1.2.0.0, Culture=neutral, PublicKeyToken=d92f7d382ca67893, processorArchitecture=MSIL">
+      <HintPath>..\packages\Aml.Engine.1.3.6\lib\net4.7\treelib.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CaexOpener.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="GlobalHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
