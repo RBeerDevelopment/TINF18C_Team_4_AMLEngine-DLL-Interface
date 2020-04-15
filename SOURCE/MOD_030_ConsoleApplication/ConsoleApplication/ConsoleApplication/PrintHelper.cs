@@ -7,13 +7,6 @@ namespace ConsoleApplication
     public static class PrintHelper
     {
 
-        public static void welcome()
-        {
-            // print welcome,license .... Doc , explanat
-
-            Console.WriteLine("welcome, doc, explant");
-        }
-
         public static void Exit(string Message = "")
         {
             printCentredLine(Message +"\n\n");
