@@ -92,7 +92,7 @@ namespace ConsoleApplication
             Console.WriteLine(line());
             Console.WriteLine("\n");
             printCentredLine("Available Options to configure this Program: \n\n");
-            printCentredLine("AutoRepair: Automatically repais all Issues found while Validating\n");
+            printCentredLine("AutoRepair: Automatically repairs all Issues found while Validating\n");
             printCentredLine("PrintAllVal: Prints all found Elements to the Console while Validating\n\n");
             printCentredLine("Which Config do you want to Change?\n\n");
             printCentredLine("Type Exit, Quit or just press Enter to go back to Menu\n");
