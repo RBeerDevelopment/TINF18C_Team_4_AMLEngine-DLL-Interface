@@ -73,7 +73,7 @@ namespace ConsoleApplication
                         // Only when User entered a valid Path
                         if (!String.IsNullOrEmpty(new_path))
                         {
-                            doc.SaveToFile(new_path, true);
+                            doc.SaveToFile(new_path+"\\Corrected_File.aml", true);
                             PrintHelper.println($"saved to file {new_path}\n\n", ConsoleColor.Cyan);
                         }
                     }
