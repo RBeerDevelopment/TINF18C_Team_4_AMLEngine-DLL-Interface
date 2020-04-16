@@ -54,7 +54,7 @@ namespace ConsoleApplication
 
                 Validator ValidatorInstance = new Validator();
                 // First try Execution with Parameters
-                Parser.Default.ParseArguments<CommandLineOptions>(args)
+                var result = Parser.Default.ParseArguments<CommandLineOptions>(args)
                     .WithParsed(options =>
                     {
                         if(!String.IsNullOrEmpty(options.path))
@@ -99,7 +99,8 @@ namespace ConsoleApplication
                             }
                         }
                     });
-
+                if (result.Tag == ParserResultType.NotParsed)
+                    ContinueMainMenu = false;
                 while (ContinueMainMenu)
                 {
                     PrintHelper.loopExplanation();
