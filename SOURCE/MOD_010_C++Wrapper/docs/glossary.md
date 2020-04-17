@@ -1,0 +1,4 @@
+# Glossary
+- VS
+- Nuget PM
+- 
