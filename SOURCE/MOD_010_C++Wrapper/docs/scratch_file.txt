@@ -1,0 +1,13 @@
+.\packages\NuGet.CommandLine.5.5.1\tools\NuGet.exe Install -NonInteractive -OutputDirectory packages ConsoleApplication1\packages.config
+ irgendwie besser gestalten ???
+
+ installierte .Net Version rausfinden ???
+
+ links für nächsten Seiten anpassen
+
+ glossary machen
+
+ - framework ?????
+https://docs.microsoft.com/en-us/cpp/build/working-with-project-properties?view=vs-2019
+
+https://stackoverflow.com/questions/58590513/is-it-possible-to-compile-c-thats-using-a-net-dll-with-gcc
