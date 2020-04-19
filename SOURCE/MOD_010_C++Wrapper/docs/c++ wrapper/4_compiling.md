@@ -26,11 +26,11 @@ Paste the following command in the window ``Additional Options`` at the bottom.
 ````
 Resources for deeper explanations can be found [here](https://docs.microsoft.com/en-us/cpp/build/reference/zc-twophase?view=vs-2019).
 
-![](screenshots/vs_editor_project_settings_c++_cli_twoPhase.png)
+![](improved_screenshots/vs_editor_project_settings_c++_cli_twoPhase.png)
 
 ## Start the Compiler
-In the editor press the compile button on the top of the editor window.
+In the editor press the Debugger-button on the top of the editor window.
 
-![](screenshots/vs_editor_start_compiling.png)
+![](improved_screenshots/vs_editor_start_compiling.png)
 
 Now the compiler started and should run through, and run though the main method. If not check this [link](common_warnings.md).

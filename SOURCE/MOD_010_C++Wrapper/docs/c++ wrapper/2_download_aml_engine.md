@@ -21,7 +21,7 @@ Between the tags ``packages``, paste following line:
 ````
 <package id="Aml.Engine" version="1.3.6" />
 ````
-...so that it looks like in the picture.
+...so that it looks like in the picture. After this press save on top of the editor or just press [STRG + S].
 
 ![](screenshots/vs_editor_package.conf.png)
 
@@ -34,7 +34,7 @@ Start the console like in the picture:
 In the command prompt copy following command.
 Two things has to be changed in this command.
 - the project name, if you haven't changed it, it's probably ``ConsoleApplication1``
-- the nuget-commandline version
+- the nuget-commandline version (here it is version 5.5.1)
 
 ````
 .\packages\NuGet.CommandLine.5.5.1\tools\NuGet.exe Install -NonInteractive -OutputDirectory packages ConsoleApplication1\packages.config
