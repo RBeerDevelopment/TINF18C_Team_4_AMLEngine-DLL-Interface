@@ -827,6 +827,7 @@ MigrationBackup/
 
 # IntelliJ Idea
 /SOURCE/MOD_020_JSWrapper/Node Projekt/.idea
+.idea/
 
 # AML Specific Files
 /SOURCE/MOD_020_JSWrapper/Node Projekt/build/*.aml
