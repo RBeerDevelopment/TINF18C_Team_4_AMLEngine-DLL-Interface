@@ -18,6 +18,7 @@ namespace Adapter
 
     public class Startup
     {
+
         public async Task<object> Invoke(dynamic payload)
         {
             /**

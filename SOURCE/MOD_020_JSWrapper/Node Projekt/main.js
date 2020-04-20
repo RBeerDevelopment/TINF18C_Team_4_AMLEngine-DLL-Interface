@@ -1,5 +1,9 @@
 
 wrapper = require('./AMLEngineWrapper.js');
 
-// Example call
+function logResult(result) {
+    console.log(`Call returned: ${result}`);
+}
+
+
 wrapper.call("createTestFile", 1);
