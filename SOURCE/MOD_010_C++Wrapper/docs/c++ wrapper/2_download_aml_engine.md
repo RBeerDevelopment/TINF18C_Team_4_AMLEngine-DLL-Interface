@@ -49,7 +49,9 @@ Now right-click on ``References`` and choose ``Add Reference`` in the right hand
 ![](screenshots/vs_editor_add_reference.png)
 
 In the new window select the tab ``Browse`` and hit the button ``Browse`` on the bottom of the window.
+
 ![](screenshots/vs_reference_brwose.png)
+
 In the window explorer navigate to the package directory and select the Aml.Engine.dll
 Here you have to choose which .Net Version you have installed. navigate in the correct version.
  Also jot down this version, as we need it later. An example would be:
