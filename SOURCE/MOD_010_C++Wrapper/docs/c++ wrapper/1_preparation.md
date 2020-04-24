@@ -12,7 +12,7 @@ For developing with C++, start the Installer and select ``change``.
 
 ![](screenshots/vs_installer_overview.png)
 
-In the now opening window select ``Desktop ENTWICKLUNG MIT C++``. On the bottom of the page hit ``Ändern`` (engl. Change).
+In the now opening window select ``Desktop ENTWICKLUNG MIT C++``. On the bottom of the page hit ``install`` (engl. Change).
 
 ![](screenshots/vs_installer_add_components_german.png)
 
