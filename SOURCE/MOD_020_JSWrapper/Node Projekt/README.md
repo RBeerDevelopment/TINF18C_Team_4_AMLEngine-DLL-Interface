@@ -1,12 +1,5 @@
 # Installation
 ````
-npm install
+npm install amlenginewrapper
 ````
-
-
-
-
-# Start Example
-````
-node sample.js
-````
+README WIP

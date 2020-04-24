@@ -1,5 +1,5 @@
 var edge = require('edge-js');
-var adapter = edge.func('./dlls/Adapter.dll');
+var adapter = edge.func('./node_modules/amlenginewrapper/dlls/Adapter.dll');
 
 function call(functionName, path, input = {}, callback = null) {
     //console.log({function_name: functionName, path: path, ...input});
