@@ -56,7 +56,7 @@ In the window explorer navigate to the package directory and select the Aml.Engi
 Here you have to choose which .Net Version you have installed. navigate in the correct version.
  Also jot down this version, as we need it later. An example would be:
 ````
-<absolute Path ot project directory>/ConsoleApplication1\packages\Aml.Engine.1.3.6\lib\net4.7\AML.Engine.dll
+<absolute path of project directory>/ConsoleApplication1\packages\Aml.Engine.1.3.6\lib\net4.7\AML.Engine.dll
 ````
 
 [NEXT PAGE](3_add_sample_code.md)
