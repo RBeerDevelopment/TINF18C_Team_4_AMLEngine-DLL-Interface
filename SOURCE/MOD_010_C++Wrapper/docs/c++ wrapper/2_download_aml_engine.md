@@ -42,7 +42,17 @@ Two things has to be changed in this command.
 The console should print something similar to the output in the picture.
 ![](screenshots/cmd_donwload_aml.png)
 
-## 4. Adding a reference
+## 4. Project Compiler Settings - Runtime
+
+In order to be able to add references, we need to change the project settings accordingly.
+In the Solution Explorer on the right hand side open the project settings with a right-click on the main project node.
+Follow the options ``Configuration Properties -> Advanced -> C++/CLI Properties``.
+
+![](screenshots/vs_editor_project_settings_clr_runtime.png)
+
+In the option one below hit the option ``inherit from parent or project defaults``.
+
+## 5. Adding a reference
 
 Now right-click on ``References`` and choose ``Add Reference`` in the right handed sided Solution Explorer.
 
