@@ -1,20 +1,15 @@
 # Compiling
 
-## Compiler Settings - Runtime
+## 4. Project Compiler Settings - Runtime
 
-In the Solution Explorer on the right hand side open the project settings with a right-click on the main project node.
+If later on there is a error message, warning about the wrong .Net Version, then do the following:
+>In the Solution Explorer on the right hand side open the project settings with a right-click on the main project node.
 Follow the options ``Configuration Properties -> Advanced -> C++/CLI Properties``.
-
 ![](screenshots/vs_editor_project_settings_clr_runtime.png)
-
-In the option one below hit the option ``inherit from parent or project defaults``.
+In the option one below hit the option ``edit``.
 ![](screenshots/vs_editor_project_settings_Net_edit.png)
-
-If later on there is a error message, warning about the wrong .Net Version. Then hit ``edit``.
 In the new window write the version, we memorized. In the case of this tutorial it was ``4.7``.
-
 ![](screenshots/vs_editor_project_settings_Net_change_manual.png)
-
 After the settings hit apply, but leave the window open, as we still need for the next step.
 
 ## Compiler Settings - compiler behavior
