@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using System;
 using System.IO;
 using System.Windows.Forms;
 
@@ -11,7 +12,7 @@ namespace ConsoleApplication
         {
             printCentredLine(Message +"\n\n");
             printCentredLine(line());
-            System.Threading.Thread.Sleep(3000);
+            System.Threading.Thread.Sleep(2000);
         }
 
         public static void loopExplanation()
@@ -20,11 +21,15 @@ namespace ConsoleApplication
             Console.Clear();
             Console.WriteLine(line());
             Console.WriteLine("\n");
+            printCentredLine("AML-Engine Console Application");
+            printCentredLine("AML-Engine Version 1.3.6");
+            Console.WriteLine("\n");
             printCentredLine("What do you want to do?\n\n");
-            printCentredLine("Type \"Validate\" to Validate an AML-File\n");
-            printCentredLine("Type \"Compress\" or \"Decompress\" to Compress or Decompress an existing AMLX-File\n");
-            printCentredLine("Type \"Options\" to Edit the Configuration\n");
-            printCentredLine("Type \"Quit\" or \"Exit\" to exit the Program\n");
+            printCentredLine("Type \"Validate\" or 1 to Validate an AML-File\n");
+            printCentredLine("Type \"Compress\" or 2 to Compress Files to an existing AMLX-File\n");
+            printCentredLine("Type \"Decompress\" or 3 to Decompress an existing AMLX-File\n");
+            printCentredLine("Type \"Options\" or 4 to Edit the Configuration\n");
+            printCentredLine("Type \"Quit\" or \"Exit\" or 5 to exit the Program\n");
             Console.WriteLine("\n");
             Console.WriteLine(line()+"\n");
         }
@@ -41,7 +46,7 @@ namespace ConsoleApplication
 
         public static string GetFile(string Filename = "Any File" , string FileExtensions = "")
         {
-            OpenFileDialog dialog = new OpenFileDialog
+            System.Windows.Forms.OpenFileDialog dialog = new System.Windows.Forms.OpenFileDialog
             {
                 Multiselect = false,
                 Title = "Open " + Filename,
@@ -86,14 +91,14 @@ namespace ConsoleApplication
             return x;
         }
 
-        public static void printOptions()
+        public static void printOptions(bool AutoRepair, bool PrintAllVal)
         {
             Console.Clear();
             Console.WriteLine(line());
             Console.WriteLine("\n");
             printCentredLine("Available Options to configure this Program: \n\n");
-            printCentredLine("AutoRepair: Automatically repairs all Issues found while Validating\n");
-            printCentredLine("PrintAllVal: Prints all found Elements to the Console while Validating\n\n");
+            printCentredLine("AutoRepair: Automatically repairs all Issues found while Validating.  Current Value: "+AutoRepair.ToString()+"\n");
+            printCentredLine("PrintAllVal: Prints all found Elements to the Console while Validating.  Current Value: " + PrintAllVal.ToString() + "\n\n");
             printCentredLine("Which Config do you want to Change?\n\n");
             printCentredLine("Type Exit, Quit or just press Enter to go back to Menu\n");
             Console.WriteLine("\n");
@@ -129,6 +134,33 @@ namespace ConsoleApplication
         public static void printCentredLine(string text)
         {
             Console.WriteLine(String.Format("{0," + ((Console.WindowWidth / 2) + (text.Length / 2)) + "}", text));
+        }
+
+        public static void SetRegistryKey(string KeyName, string Value)
+        {
+            RegistryKey MainKey = GetRegistry();
+            MainKey.SetValue(KeyName, Value);
+        }
+
+        private static RegistryKey GetRegistry()
+        {
+            RegistryKey GlobalKey = Registry.CurrentUser.OpenSubKey("Software", true);
+            RegistryKey MainKey = GlobalKey.OpenSubKey("ConsoleApplication", true);
+            if (MainKey == null)
+            {
+                GlobalKey.CreateSubKey("ConsoleApplication");
+                MainKey = GlobalKey.OpenSubKey("ConsoleApplication", true);
+            }
+            return MainKey;
+        }
+
+        public static string GetRegistryKey(string KeyName)
+        {
+            RegistryKey MainKey = GetRegistry();
+            if (MainKey.GetValue(KeyName) == null)
+                return null;
+            else
+                return MainKey.GetValue(KeyName).ToString();
         }
     }
 }
