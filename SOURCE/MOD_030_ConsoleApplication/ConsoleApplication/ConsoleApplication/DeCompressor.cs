@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.IO;
 
 namespace ConsoleApplication
@@ -10,11 +11,19 @@ namespace ConsoleApplication
         {
             try
             {
+                PrintHelper.printCentredLine("What should be the Name of the Compressed AMLX-File?\n");
+                string FileName = Path.Combine(file_target, Console.ReadLine());
+                PrintHelper.printCentredLine("\n");
+                while(File.Exists(@FileName))
+                {
+                    PrintHelper.printCentredLine("File already exists in Directory. Please Choose another name.\n");
+                    FileName = Path.Combine(file_target, Console.ReadLine());
+                    PrintHelper.printCentredLine("\n");
+                }
                 // creates empty AMLX / ZIP in target directory
-                string filename = Path.Combine(file_target, "Compressed-AMLX.amlx");
 
                 // Create AML Container
-                var container = new Aml.Engine.AmlObjects.AutomationMLContainer(filename, FileMode.Create);
+                var container = new Aml.Engine.AmlObjects.AutomationMLContainer(FileName, FileMode.Create);
 
                 // Add Root-Element of AMLX-File
                 var Root = container.AddRoot(sourceAMLFile, new Uri("/" + Path.GetFileName(sourceAMLFile), UriKind.Relative));

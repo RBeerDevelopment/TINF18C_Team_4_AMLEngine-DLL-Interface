@@ -1,6 +1,7 @@
 ﻿using Aml.Engine.CAEX;
 using Aml.Engine.Services;
 using System;
+using System.IO;
 
 namespace ConsoleApplication
 {
@@ -37,7 +38,7 @@ namespace ConsoleApplication
                         PrintHelper.println("Type yes to repair the error\n\n", ConsoleColor.Yellow);
 
                     // try reparing
-                    if (CurrentOptions.AutoRepair || Console.ReadLine().ToUpper().Trim() == "YES")
+                    if (CurrentOptions.AutoRepair || "YES".StartsWith(Console.ReadLine().ToUpper().Trim()))
                     {
                         // start reparing
                         FileChanged = true;
@@ -59,7 +60,7 @@ namespace ConsoleApplication
                     PrintHelper.println("Override file ? (Yes/No)\n\n", this.default_foreground);
 
                     // if override file
-                    if (Console.ReadLine().ToUpper().Trim() == "YES")
+                    if ("YES".StartsWith(Console.ReadLine().ToUpper().Trim()))
                     {
                         doc.SaveToFile(path, true);
 
@@ -73,8 +74,17 @@ namespace ConsoleApplication
                         // Only when User entered a valid Path
                         if (!String.IsNullOrEmpty(new_path))
                         {
-                            doc.SaveToFile(new_path+"\\Corrected_File.aml", true);
-                            PrintHelper.println($"saved to file {new_path}\n\n", ConsoleColor.Cyan);
+                            PrintHelper.printCentredLine("What should be the Name of the Repaired AML-File?\n");
+                            string FileName = Path.Combine(new_path, Console.ReadLine());
+                            PrintHelper.printCentredLine("\n");
+                            while (File.Exists(@FileName))
+                            {
+                                PrintHelper.printCentredLine("File already exists in Directory. Please Choose another name.\n");
+                                FileName = Path.Combine(new_path, Console.ReadLine());
+                                PrintHelper.printCentredLine("\n");
+                            }
+                            doc.SaveToFile(FileName, true);
+                            PrintHelper.println($"saved to file {FileName}\n\n", ConsoleColor.Cyan);
                         }
                     }
                 }
