@@ -1,6 +1,6 @@
 {
   "name": "amlenginewrapper",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "This wrapper allows easy access to the most important functionality of the AMLEnginge.dll inside of a Node project.",
   "main": "AMLEngineWrapper.js",
   "license": "MIT",
