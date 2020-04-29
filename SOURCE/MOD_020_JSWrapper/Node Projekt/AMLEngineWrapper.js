@@ -18,12 +18,18 @@ function call(functionName, path, input = {}, callback = null) {
 
 // Usage examples of all supported functions
 // Also allows a developer to look through all supported functions using code completion
-
-function appendToInstanceHierarchy(path, instanceName, internalElement, callback = null) {
-    call("instanceHierarchy_Append", path, {
-        instance: instanceName,
-        internalelement: internalElement
-    }, callback);
+function appendToInstanceHierarchy(path, instanceName, internalElement = null, callback = null) {
+    if(internalElement == null) {
+        call("instanceHierarchy_Append", path, {
+            instance: instanceName
+        }, callback);
+    }
+    else {
+        call("instanceHierarchy_Append", path, {
+            instance: instanceName,
+            internalelement: internalElement
+        }, callback);
+    }
 }
 
 function getInstanceHierarchy(path, index, callback = null) {
