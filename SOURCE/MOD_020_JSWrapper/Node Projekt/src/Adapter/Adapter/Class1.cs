@@ -41,7 +41,6 @@ namespace Adapter
                 * change data in instance hierarchy | element = null löscht Element
              */
 
-            Console.WriteLine("Testeroni"); // FIXME: Delete
             //Console.WriteLine($"This is the payload function_name: {payload.function_name}");
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
                 throw new Exception("Error: function_name and path expected");
@@ -51,25 +50,26 @@ namespace Adapter
 
 
             //output to give back
-            dynamic output = new object();
+            string output = string.Empty;
 
             // global caex document to work with
             CAEXDocument caex = CaexOpener.OpenCaexSafe(@payload.path);
 
             if (caex == null)
             {
-                output.result = "Cannot open file, ERROR occured";
+                output = "Cannot open file, ERROR occured";
                 Console.WriteLine("Stopping c# programm...");
 
-                output.result = "Cannot open file, ERROR occured";
+                output = "Cannot open file, ERROR occured";
                 throw new Exception("Error: Cannot open file");
             }
 
             Console.WriteLine(payload.function_name);
             switch ((payload.function_name as string).ToUpper())
             {
+
                 case "INSTANCEHIERARCHY_APPEND":
-                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "instance", "path" }))
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload,"instance"))
                         throw new Exception("Error: name for the instance expected");
 
                     var hierarchyInstanceName = payload.instance;
@@ -79,11 +79,11 @@ namespace Adapter
 
 
 
-                    if (!GlobalHelper.dynamicPayloadHasKeys(payload, "internalelement"))
+                    if (GlobalHelper.dynamicPayloadHasKeys(payload, "internalelement"))
                         hierarchyInstance.InternalElement.Append(payload.internalelement);
 
 
-                    output.result = $"Created instance hierarchy {hierarchyInstanceName} on file";
+                    output = $"Created instance hierarchy {hierarchyInstanceName} on file";
                     break;
 
                 case "INSTANCEHIERARCHY_GET":
@@ -93,9 +93,8 @@ namespace Adapter
 
                     var indexer = payload.indexer;
                     var hierarchy = getInstanceHierarchy(indexer, caex);
-                    // WORKING ???? maybe tostring
-                    output.result = hierarchy;
 
+                    output = hierarchy.ToString();
                     break;
 
 
@@ -124,17 +123,17 @@ namespace Adapter
                                 hierarchy = getInstanceHierarchy(indexer, caex);
 
                                 var new_hierarchy = hierarchy.Insert(uclass.CreateClassInstance());
-                                output.result = $"Created UnitclassLib {lib_name}, created systemunitclass {class_name} and attached to hierarchy{indexer}";
+                                output = $"Created UnitclassLib {lib_name}, created systemunitclass {class_name} and attached to hierarchy{indexer}";
                             }
                             else
                             {
-                                output.result = $"Created UnitclassLib {lib_name} and created systemunitclass {class_name}";
+                                output = $"Created UnitclassLib {lib_name} and created systemunitclass {class_name}";
                             }
 
                         }
                         else
                         {
-                            output.result = $"Created UnitclassLib {lib_name}";
+                            output = $"Created UnitclassLib {lib_name}";
                         }
                     }
                     else
@@ -162,11 +161,11 @@ namespace Adapter
                             var iface_name = payload.iface_name;
                             var iface = iface_class.InterfaceClass.Append(iface_name);
 
-                            output.result = $"Created Interface-class {iface_classname} and Interface {iface_name}";
+                            output = $"Created Interface-class {iface_classname} and Interface {iface_name}";
                         }
                         else
                         {
-                            output.result = $"Created Interface-class {iface_classname}";
+                            output = $"Created Interface-class {iface_classname}";
                         }
                     }
                     else
@@ -190,7 +189,7 @@ namespace Adapter
                     var instanceHierarchy = getInstanceHierarchy(payload.indexer, caex); //get instancehierarchy
                     var elementNew = payload.inElement;
                     instanceHierarchy.InternalElement.Append(elementNew); //add new element
-                    output.result = $"Created new internal element named {payload.inElement}";
+                    output = $"Created new internal element named {payload.inElement}";
                     break;
 
                 /*
@@ -208,9 +207,9 @@ namespace Adapter
                     var dataOld2 = hierarchy2.InternalElement;
                     hierarchy2.InternalElement = dataToWrite2;
                     if(dataOld2 != null) {
-                        output.result = $"Changed data from {dataOld2} to {dataToWrite2}.";   
+                        output = $"Changed data from {dataOld2} to {dataToWrite2}.";   
                     } else {
-                        output.result = $"Changed cell data to {dataToWrite2}";
+                        output = $"Changed cell data to {dataToWrite2}";
                     }
                     break;
                 case "SEARCH_AND_CHANGE_CONTENT":
@@ -239,13 +238,13 @@ namespace Adapter
                  *          **/
                 case "VALIDATE":
                     var validator = new Validator();
-                    output.result = validator.validate(caex, payload.path);
+                    output = validator.validate(caex, payload.path);
                     break;
 
                 case "REPAIR":
                     validator = new Validator();
 
-                    output.result = validator.validate_and_repair(caex, payload.path);
+                    output = validator.validate_and_repair(caex, payload.path);
                     break;
                 case "INTERNALLINKS":
                     //trickle down
@@ -292,7 +291,13 @@ namespace Adapter
 
         private InstanceHierarchyType getInstanceHierarchy(string indexer, CAEXDocument caex)
         {
-            return caex.CAEXFile.InstanceHierarchy[indexer];
+            var hierarchy= caex.CAEXFile.InstanceHierarchy[indexer];
+
+            if (hierarchy == null)
+            {
+                throw new Exception($"Cannot find InstanceHierarchyType {indexer}");
+            }
+            return hierarchy;
         }
     }
 }
