@@ -193,14 +193,14 @@ namespace Adapter
                     break;
 
                 /*
-                 * his case rewrited the contents of an element to the given data
+                 * his case renames an internal element.
                  */
-                case "CHANGE_DATA":
-                    Console.Write("In Change data");
+                case "RENAME_ELEMENT":
+                    Console.Write("In rename_element");
                     if(!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer")) {
                         throw new Exception("Error: name for indexer is missing");
-                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
-                        throw new Exception("Error: no data found");
+                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "newName")) {
+                        throw new Exception("Error: no \"newName\" found");
                     } else if (!GlobalHelper.dynamicPayloadHasKeys(payload, "ie"))
                     {
                         throw new Exception("Error: name of internal element is missing (key is \"ie\"");
@@ -210,7 +210,7 @@ namespace Adapter
                    
                     var hierarchy2 = getInstanceHierarchy(indexer2, caex);
                    
-                    var newIE = payload.data;
+                    var newIE = payload.newName;
                     var nameOfIEToReplace = payload.ie;
         
                     var oldIE = findInternalElement(hierarchy2, caex, nameOfIEToReplace);
@@ -224,24 +224,9 @@ namespace Adapter
               
                     if(nameOfIEToReplace != null) {
                         oldIE.Name = newIE;
-                        output = $"Changed data from {nameOfIEToReplace} to {newIE}.";   
+                        output = $"Changed \"newName\" from {nameOfIEToReplace} to {newIE}.";   
                     }
                
-                    break;
-                case "SEARCH_AND_CHANGE_CONTENT":
-                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, "searchWord")) {
-                        throw new Exception("Error: searchWord field was not found");
-                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
-                        throw new Exception("Error: data field was not found");
-                    }
-                    var searchWord = payload.searchWord;
-                    var dataToWrite3 = payload.data;
-                    var hierarchyIndex = searchForElement(searchWord, caex); // search for keyword
-                    if(hierarchyIndex == null) {
-                        throw new Exception("Error: Something went wrong with the search.");
-                    }
-                    var hierarchy3 = getInstanceHierarchy(hierarchyIndex, caex);
-                    writeToCell(dataToWrite3, hierarchy3); // write new data to cell
                     break;
 
                 /*
@@ -320,23 +305,30 @@ namespace Adapter
 
         private InternalElementType findInternalElement(InstanceHierarchyType hierarchy, CAEXDocument caex, string nameOfElement)
         {
-            Console.WriteLine("in findInternalElement");
+            
             foreach (var internalElement in hierarchy)
             {
+            
                 if(internalElement.Name == nameOfElement)
                 {
                     return internalElement;
                 } else
                 {
-                    return cycleElements(internalElement, nameOfElement);
+            
+                    var cycleResult  = cycleElements(internalElement, nameOfElement);
+            
+                    if(cycleResult.Name != null) {
+                        return cycleResult;
+                    } 
                 }
+                
             }
             throw new Exception("No internal elements for this indexer " + hierarchy);
         
         }
         private InternalElementType cycleElements(InternalElementType ie, string nameToBeSearched)
         {
-            Console.WriteLine("in cycle");
+            
             foreach (var internalElementChild in ie.InternalElement)
             {
                 if (internalElementChild.Name == nameToBeSearched)
@@ -345,20 +337,17 @@ namespace Adapter
                 }
                 else
                 {
-                    if(internalElementChild.InternalElement == null)
-                    {
-                        throw new Exception("There was no element found with name " + nameToBeSearched);
-                    } else
+                    if(internalElementChild.InternalElement != null)
                     {
                         var ieToReturn = cycleElements(internalElementChild, nameToBeSearched);
-                        if(ieToReturn.Name != null)
+                        if (ieToReturn.Name != null)
                         {
                             return ieToReturn;
                         }
-                    }
+                    } 
                 }
             }
-            throw new Exception("There was no element found with name " + nameToBeSearched);
+            return new InternalElementType(new System.Xml.Linq.XElement("NULL"));// throw new Exception("There was no element found with name " + nameToBeSearched);
 
         }
 
