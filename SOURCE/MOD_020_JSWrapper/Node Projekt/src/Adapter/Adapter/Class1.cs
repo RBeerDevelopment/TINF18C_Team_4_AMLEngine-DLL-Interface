@@ -303,21 +303,25 @@ namespace Adapter
             return hierarchy;
         }
 
+        /**
+        * This function searches for an internal element with a given name in a given hierarchy. Children of internal elements
+        * get searched aswell.
+        */
         private InternalElementType findInternalElement(InstanceHierarchyType hierarchy, CAEXDocument caex, string nameOfElement)
         {
-            
+            // Cycle through alle children elements in the hierarchy
             foreach (var internalElement in hierarchy)
             {
             
-                if(internalElement.Name == nameOfElement)
+                if(internalElement.Name == nameOfElement) // element found
                 {
                     return internalElement;
-                } else
+                } else // element is not the searched for element
                 {
             
-                    var cycleResult  = cycleElements(internalElement, nameOfElement);
+                    var cycleResult  = cycleElements(internalElement, nameOfElement); // cycle through descendants
             
-                    if(cycleResult.Name != null) {
+                    if(cycleResult.Name != null){ // element was found in the descendants
                         return cycleResult;
                     } 
                 }
@@ -326,28 +330,33 @@ namespace Adapter
             throw new Exception("No internal elements for this indexer " + hierarchy);
         
         }
+
+        /**
+         * This function is a recursive hekper function for findInternalElement and cycles through the children
+         * of a given internal element until the sought-after is found or until there are no more descendants.
+         */
         private InternalElementType cycleElements(InternalElementType ie, string nameToBeSearched)
         {
             
-            foreach (var internalElementChild in ie.InternalElement)
+            foreach (var internalElementChild in ie.InternalElement) // cycle through children
             {
-                if (internalElementChild.Name == nameToBeSearched)
+                if (internalElementChild.Name == nameToBeSearched) // element found
                 {
                     return internalElementChild;
                 }
                 else
                 {
-                    if(internalElementChild.InternalElement != null)
+                    if(internalElementChild.InternalElement != null) // element has children
                     {
-                        var ieToReturn = cycleElements(internalElementChild, nameToBeSearched);
-                        if (ieToReturn.Name != null)
+                        var ieToReturn = cycleElements(internalElementChild, nameToBeSearched); // start recursion
+                        if (ieToReturn.Name != null) // found element in children
                         {
                             return ieToReturn;
                         }
                     } 
                 }
             }
-            return new InternalElementType(new System.Xml.Linq.XElement("NULL"));// throw new Exception("There was no element found with name " + nameToBeSearched);
+            return new InternalElementType(new System.Xml.Linq.XElement("NULL")); // cant return null element, therefor return useless element
 
         }
 
