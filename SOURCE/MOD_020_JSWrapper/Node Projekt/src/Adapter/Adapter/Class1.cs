@@ -41,7 +41,7 @@ namespace Adapter
                 * change data in instance hierarchy | element = null löscht Element
              */
 
-            //Console.WriteLine($"This is the payload function_name: {payload.function_name}");
+            
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
                 throw new Exception("Error: function_name and path expected");
 
@@ -69,10 +69,10 @@ namespace Adapter
             {
 
                 case "INSTANCEHIERARCHY_APPEND":
-                    if (!GlobalHelper.dynamicPayloadHasKeys(payload,"instance"))
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload,"indexer"))
                         throw new Exception("Error: name for the instance expected");
 
-                    var hierarchyInstanceName = payload.instance;
+                    var hierarchyInstanceName = payload.indexer;
 
                     // only string or Array of Tupels (key,value)
                     var hierarchyInstance = caex.CAEXFile.InstanceHierarchy.Append(hierarchyInstanceName);
@@ -196,7 +196,7 @@ namespace Adapter
                  * his case renames an internal element.
                  */
                 case "RENAME_ELEMENT":
-                    Console.Write("In rename_element");
+                    
                     if(!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer")) {
                         throw new Exception("Error: name for indexer is missing");
                     } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "newName")) {
@@ -265,16 +265,6 @@ namespace Adapter
             return output;
         }
 
-        private string writeToCell(string data, InstanceHierarchyType hierarchy) {
-            var dataOld = hierarchy.InternalElement;
-            //hierarchy.InternalElement. = data; || FIXME: Element ist schreibgeschützt, suche Methode zum Schreiben
-            if(dataOld != null) {
-                return $"Changed data from {dataOld} to {data}.";   
-            } else {
-                return $"Changed cell data to {data}";
-            }
-        }
-
         private InstanceHierarchyType searchForElement(string element, CAEXDocument caex) {
             foreach(var instanceHierarchy in caex.CAEXFile.InstanceHierarchy) {
                 if(instanceHierarchy.InternalElement.ElementName == element) {
@@ -292,12 +282,11 @@ namespace Adapter
 
         private InstanceHierarchyType getInstanceHierarchy(string indexer, CAEXDocument caex)
         {
-            Console.WriteLine("in getInstanceHier");
             var hierarchy= caex.CAEXFile.InstanceHierarchy[indexer];
-            Console.WriteLine("in getInstanceHier/" + indexer + "/" + hierarchy);
+         
             if (hierarchy == null)
             {
-                Console.WriteLine("in getInstanceHierNULL");
+         
                 throw new Exception($"Cannot find InstanceHierarchyType {indexer}");
             }
             return hierarchy;
