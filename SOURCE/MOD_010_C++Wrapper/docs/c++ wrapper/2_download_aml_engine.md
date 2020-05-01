@@ -14,7 +14,7 @@ Install-Package NuGet.CommandLine
 This will download the tool ``nuget.exe``. With this tool, we can download the Aml.Engine.dll.
 ![](screenshots/vs_nuget_cli_install_nuget.png)
 
-## 2. change ``package.conf``
+## 2. change ``packages.config``
 
 In the Solution Explorer on the right sight select the file ``packages.config``.
 Between the tags ``packages``, paste following line:
