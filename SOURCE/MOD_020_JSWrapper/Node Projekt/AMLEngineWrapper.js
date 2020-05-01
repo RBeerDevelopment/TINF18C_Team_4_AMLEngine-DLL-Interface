@@ -1,6 +1,6 @@
 var edge = require('edge-js');
 var adapter = edge.func('./node_modules/amlenginewrapper/dlls/Adapter.dll');
-
+//var adapter = edge.func('./src/Adapter/Adapter/bin/Release/Adapter.dll');
 function call(functionName, path, input = {}, callback = null) {
     //console.log({function_name: functionName, path: path, ...input});
     adapter({function_name: functionName, path: path, ...input}, function (error, result) {
@@ -74,17 +74,11 @@ function appendInstanceElement(path, index, instanceElement, callback = null) {
     }, callback);
 }
 
-function changeData(path, index, data, callback = null) {
-    return call("change_data", path, {
-        indexer: index,
-        data: data
-    }, callback);
-}
-
-function searchAndChangeContent(path, searchWord, data, callback = null) {
-    return call("search_and_change_content", path, {
-        searchWord: searchWord,
-        data: data
+function renameElement(path, indexer, newName, ie, callback = null) {
+    return call("rename_element", path, {
+        indexer: indexer,
+        newName: newName,
+        ie: ie
     }, callback);
 }
 

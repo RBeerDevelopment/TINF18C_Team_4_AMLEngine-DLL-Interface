@@ -41,7 +41,7 @@ namespace Adapter
                 * change data in instance hierarchy | element = null löscht Element
              */
 
-            //Console.WriteLine($"This is the payload function_name: {payload.function_name}");
+            
             if (!GlobalHelper.dynamicPayloadHasKeys(payload, new[] { "function_name", "path" }))
                 throw new Exception("Error: function_name and path expected");
 
@@ -69,10 +69,10 @@ namespace Adapter
             {
 
                 case "INSTANCEHIERARCHY_APPEND":
-                    if (!GlobalHelper.dynamicPayloadHasKeys(payload,"instance"))
+                    if (!GlobalHelper.dynamicPayloadHasKeys(payload,"indexer"))
                         throw new Exception("Error: name for the instance expected");
 
-                    var hierarchyInstanceName = payload.instance;
+                    var hierarchyInstanceName = payload.indexer;
 
                     // only string or Array of Tupels (key,value)
                     var hierarchyInstance = caex.CAEXFile.InstanceHierarchy.Append(hierarchyInstanceName);
@@ -193,39 +193,40 @@ namespace Adapter
                     break;
 
                 /*
-                 * his case rewrited the contents of an element to the given data
+                 * his case renames an internal element.
                  */
-                case "CHANGE_DATA":
+                case "RENAME_ELEMENT":
+                    
                     if(!GlobalHelper.dynamicPayloadHasKeys(payload, "indexer")) {
                         throw new Exception("Error: name for indexer is missing");
-                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
-                        throw new Exception("Error: no data found");
+                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "newName")) {
+                        throw new Exception("Error: no \"newName\" found");
+                    } else if (!GlobalHelper.dynamicPayloadHasKeys(payload, "ie"))
+                    {
+                        throw new Exception("Error: name of internal element is missing (key is \"ie\"");
                     }
+                   
                     var indexer2 = payload.indexer;
+                   
                     var hierarchy2 = getInstanceHierarchy(indexer2, caex);
-                    var dataToWrite2 = payload.data;
-                    var dataOld2 = hierarchy2.InternalElement;
-                    hierarchy2.InternalElement = dataToWrite2;
-                    if(dataOld2 != null) {
-                        output = $"Changed data from {dataOld2} to {dataToWrite2}.";   
-                    } else {
-                        output = $"Changed cell data to {dataToWrite2}";
+                   
+                    var newIE = payload.newName;
+                    var nameOfIEToReplace = payload.ie;
+        
+                    var oldIE = findInternalElement(hierarchy2, caex, nameOfIEToReplace);
+                    if(oldIE == null)
+                    {
+                        throw new Exception("The internal element was not found.");
                     }
-                    break;
-                case "SEARCH_AND_CHANGE_CONTENT":
-                    if(!GlobalHelper.dynamicPayloadHasKeys(payload, "searchWord")) {
-                        throw new Exception("Error: searchWord field was not found");
-                    } else if(!GlobalHelper.dynamicPayloadHasKeys(payload, "data")) {
-                        throw new Exception("Error: data field was not found");
+
+                    oldIE.Name = newIE;
+
+              
+                    if(nameOfIEToReplace != null) {
+                        oldIE.Name = newIE;
+                        output = $"Changed \"newName\" from {nameOfIEToReplace} to {newIE}.";   
                     }
-                    var searchWord = payload.searchWord;
-                    var dataToWrite3 = payload.data;
-                    var hierarchyIndex = searchForElement(searchWord, caex); // search for keyword
-                    if(hierarchyIndex == null) {
-                        throw new Exception("Error: Something went wrong with the search.");
-                    }
-                    var hierarchy3 = getInstanceHierarchy(hierarchyIndex, caex);
-                    writeToCell(dataToWrite3, hierarchy3); // write new data to cell
+               
                     break;
 
                 /*
@@ -264,16 +265,6 @@ namespace Adapter
             return output;
         }
 
-        private string writeToCell(string data, InstanceHierarchyType hierarchy) {
-            var dataOld = hierarchy.InternalElement;
-            //hierarchy.InternalElement. = data; || FIXME: Element ist schreibgeschützt, suche Methode zum Schreiben
-            if(dataOld != null) {
-                return $"Changed data from {dataOld} to {data}.";   
-            } else {
-                return $"Changed cell data to {data}";
-            }
-        }
-
         private InstanceHierarchyType searchForElement(string element, CAEXDocument caex) {
             foreach(var instanceHierarchy in caex.CAEXFile.InstanceHierarchy) {
                 if(instanceHierarchy.InternalElement.ElementName == element) {
@@ -292,12 +283,71 @@ namespace Adapter
         private InstanceHierarchyType getInstanceHierarchy(string indexer, CAEXDocument caex)
         {
             var hierarchy= caex.CAEXFile.InstanceHierarchy[indexer];
-
+         
             if (hierarchy == null)
             {
+         
                 throw new Exception($"Cannot find InstanceHierarchyType {indexer}");
             }
             return hierarchy;
         }
+
+        /**
+        * This function searches for an internal element with a given name in a given hierarchy. Children of internal elements
+        * get searched aswell.
+        */
+        private InternalElementType findInternalElement(InstanceHierarchyType hierarchy, CAEXDocument caex, string nameOfElement)
+        {
+            // Cycle through alle children elements in the hierarchy
+            foreach (var internalElement in hierarchy)
+            {
+            
+                if(internalElement.Name == nameOfElement) // element found
+                {
+                    return internalElement;
+                } else // element is not the searched for element
+                {
+            
+                    var cycleResult  = cycleElements(internalElement, nameOfElement); // cycle through descendants
+            
+                    if(cycleResult.Name != null){ // element was found in the descendants
+                        return cycleResult;
+                    } 
+                }
+                
+            }
+            throw new Exception("No internal elements for this indexer " + hierarchy);
+        
+        }
+
+        /**
+         * This function is a recursive hekper function for findInternalElement and cycles through the children
+         * of a given internal element until the sought-after is found or until there are no more descendants.
+         */
+        private InternalElementType cycleElements(InternalElementType ie, string nameToBeSearched)
+        {
+            
+            foreach (var internalElementChild in ie.InternalElement) // cycle through children
+            {
+                if (internalElementChild.Name == nameToBeSearched) // element found
+                {
+                    return internalElementChild;
+                }
+                else
+                {
+                    if(internalElementChild.InternalElement != null) // element has children
+                    {
+                        var ieToReturn = cycleElements(internalElementChild, nameToBeSearched); // start recursion
+                        if (ieToReturn.Name != null) // found element in children
+                        {
+                            return ieToReturn;
+                        }
+                    } 
+                }
+            }
+            return new InternalElementType(new System.Xml.Linq.XElement("NULL")); // cant return null element, therefor return useless element
+
+        }
+
     }
 }

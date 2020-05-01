@@ -91,7 +91,7 @@ namespace Adapter
             else if (FileChanged)
             {
 
-                doc.SaveToFile(path, true);
+                doc.SaveToFile(@path, true);
                 println($"saved to file {path}", ConsoleColor.Cyan);
 
             }
