@@ -1,8 +1,7 @@
 var edge = require('edge-js');
 var adapter = edge.func('./node_modules/amlenginewrapper/dlls/Adapter.dll');
-//var adapter = edge.func('./src/Adapter/Adapter/bin/Release/Adapter.dll');
+
 function call(functionName, path, input = {}, callback = null) {
-    //console.log({function_name: functionName, path: path, ...input});
     adapter({function_name: functionName, path: path, ...input}, function (error, result) {
         if (error) throw error;
         if (result) {
@@ -18,15 +17,15 @@ function call(functionName, path, input = {}, callback = null) {
 
 // Usage examples of all supported functions
 // Also allows a developer to look through all supported functions using code completion
-function appendToInstanceHierarchy(path, instanceName, internalElement = null, callback = null) {
+function appendToInstanceHierarchy(path, index, internalElement = null, callback = null) {
     if(internalElement == null) {
         return call("instanceHierarchy_Append", path, {
-            instance: instanceName
+            indexer: index
         }, callback);
     }
     else {
         return call("instanceHierarchy_Append", path, {
-            instance: instanceName,
+            indexer: index,
             internalelement: internalElement
         }, callback);
     }
@@ -74,11 +73,11 @@ function appendInstanceElement(path, index, instanceElement, callback = null) {
     }, callback);
 }
 
-function renameElement(path, indexer, newName, ie, callback = null) {
+function renameElement(path, indexer, newName, internalElement, callback = null) {
     return call("rename_element", path, {
         indexer: indexer,
         newName: newName,
-        ie: ie
+        ie: internalElement
     }, callback);
 }
 
@@ -97,8 +96,7 @@ module.exports = {
     createSystemUnitClass,
     createInterfaceClass,
     appendInstanceElement,
-    changeData,
-    searchAndChangeContent,
+    renameElement,
     validate,
     repair,
 };
