@@ -22,7 +22,8 @@ This project aims to make the [AMLEngine](https://github.com/AutomationML/AMLEng
   - [Development Documentation](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/Development-Documentation)
   - [System Requirements](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Requirements)
   - [System Architecture](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Architecture)
-  - [System Testing](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Testing)
+  - System Testing
+    - [System Test Plan](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/System-Test-Plan)
   - Module documentation
     - [<MOD.010> C++ Wrapper documentation](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/Module%20Documentation%20C++%20Wrapper)
     - [<MOD.021> Node Package Documentation](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki/MOD.021-:-Node-Package-Documentation)
