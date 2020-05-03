@@ -1,5 +1,5 @@
 # AMLEngineWrapper
-##### *Version 1.0.4*
+##### *Version 1.0.6*
 Wrapper for the [AMLEngine.dll](https://www.nuget.org/packages/Aml.Engine) for [Node.js](https://nodejs.org/)
 
 ````
