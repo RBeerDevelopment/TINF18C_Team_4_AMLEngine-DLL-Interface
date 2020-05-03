@@ -1,13 +1,9 @@
 {
-  "name": "node-projekt",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
+  "name": "amlenginewrapper",
+  "version": "1.0.5",
+  "description": "This wrapper allows easy access to the most important functionality of the AMLEnginge.dll inside of a Node project.",
+  "main": "AMLEngineWrapper.js",
+  "license": "MIT",
   "dependencies": {
     "edge-js": "^13.0.1"
   }

@@ -1,0 +1,334 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<!-- Mit XMLSpy v2006 sp1 U bearbeitet (http://www.altova.com) von ABB User (ABB Forschungszentrum) -->
+<!-- Mit XMLSpy v2006 sp1 U bearbeitet (http://www.altova.com) von ABB User (ABB Forschungszentrum) -->
+<CAEXFile FileName="" SchemaVersion="2.15" xsi:noNamespaceSchemaLocation="CAEX_ClassModel.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<AdditionalInformation AutomationMLVersion="2.0" />
+	<AdditionalInformation>
+		<WriterHeader>
+			<WriterName>please provide WriterName</WriterName>
+			<WriterID>please provide WriterID</WriterID>
+			<WriterVendor>please provide Writer Vendor</WriterVendor>
+			<WriterVendorURL>please provide Writer Vendor URL</WriterVendorURL>
+			<WriterVersion>please provide Writer Version</WriterVersion>
+			<WriterRelease>please provide Writer Release</WriterRelease>
+			<LastWritingDateTime>
+			</LastWritingDateTime>
+			<WriterProjectTitle>please provide Writer Project Title</WriterProjectTitle>
+			<WriterProjectID>
+			</WriterProjectID>
+		</WriterHeader>
+	</AdditionalInformation>
+	<ExternalReference Path="Splitter1.aml" Alias="part1" />
+	<InstanceHierarchy Name="Example File" ChangeMode="state">
+		<InternalElement Name="Station" ID="{f9bceecd-d602-493b-a1ea-d6ae3018bbf5}">
+			<Description>Das ist eine Beschreibung.</Description>
+			<InternalElement Name="RobotSystem1" ID="{1cc21261-c47c-4f1b-b4e5-19d2bbffb0cc}" RefBaseSystemUnitPath="ABBComponentLibrary/Manufacturing/RobotSystem">
+				<InternalElement Name="WeldingRobot" RefBaseSystemUnitPath="ABBComponentLibrary/Manufacturing/ABBRobot" ID="{97ab9ee1-b3ff-49ce-ac94-d46bde2338a4}">
+					<Attribute Name="CollaborationHistory">
+						<Attribute Name="Thread0">
+							<Revision>
+								<RevisionDate>2010-02-15T11:21:07.3403133+01:00</RevisionDate>
+								<AuthorName>noch zu klären</AuthorName>
+							</Revision>
+							<Value>Beschreibung fehlt</Value>
+							<Attribute Name="Message0">
+								<Revision>
+									<RevisionDate>2010-02-15T11:21:35.6998698+01:00</RevisionDate>
+									<AuthorName>fehlt auch noch</AuthorName>
+								</Revision>
+								<Value>Hier fehlt eine Beschreibung.</Value>
+								<Attribute Name="Category">
+									<Value>Comment</Value>
+								</Attribute>
+								<Attribute Name="Status">
+									<Value>Open</Value>
+								</Attribute>
+								<Attribute Name="To">
+									<Value>fehlt noch</Value>
+								</Attribute>
+							</Attribute>
+						</Attribute>
+					</Attribute>
+					<Attribute Name="Model" AttributeDataType="String">
+						<Value>IRB6640_235_255</Value>
+					</Attribute>
+					<Attribute Name="Comments" AttributeDataType="String" />
+					<RoleRequirements RefBaseRoleClassPath="AutomationMLMIRoleClassLib/ManufacturingEquipment/Robot" />
+				</InternalElement>
+				<InternalElement Name="HandlingRobot" RefBaseSystemUnitPath="ABBComponentLibrary/Manufacturing/ABBRobot" ID="{c1ccc81b-1555-40b4-b3d3-0307d5de831e}">
+					<Attribute Name="CollaborationHistory">
+						<Attribute Name="Thread0">
+							<Revision>
+								<RevisionDate>2010-02-15T11:24:13.857132+01:00</RevisionDate>
+								<AuthorName>noch zu klären</AuthorName>
+							</Revision>
+							<Value>new Topic</Value>
+							<Attribute Name="Message0">
+								<Revision>
+									<RevisionDate>2010-02-15T11:24:18.9821648+01:00</RevisionDate>
+									<AuthorName>fehlt auch noch</AuthorName>
+								</Revision>
+								<Value>test</Value>
+								<Attribute Name="Category">
+									<Value>Comment</Value>
+								</Attribute>
+								<Attribute Name="Status">
+									<Value>Open</Value>
+								</Attribute>
+								<Attribute Name="To">
+									<Value>fehlt noch</Value>
+								</Attribute>
+							</Attribute>
+						</Attribute>
+					</Attribute>
+					<Attribute Name="Model" AttributeDataType="String">
+						<Value>IRB6640_235_255</Value>
+					</Attribute>
+					<Attribute Name="Comments" AttributeDataType="String" />
+					<RoleRequirements RefBaseRoleClassPath="AutomationMLMIRoleClassLib/ManufacturingEquipment/Robot" />
+				</InternalElement>
+				<InternalElement Name="CommunicationInterface" ID="{82368881-7f22-41a6-a842-3853fe9d99e2}">
+					<InternalElement Name="Signals" ID="{2b573d7c-36f5-40ab-bf70-35006bce6c36}">
+						<InternalElement Name="Outputs" ID="{b2673f24-cfcb-470f-895a-afddf16030c0}">
+							<ExternalInterface Name="go_R1_Zone" RefBaseClassPath="ABBInterfaceClassLib/Signals/GroupOutput" ID="{8efeba72-b8ee-4f88-accd-5bbbf76574bc}">
+								<Attribute Name="CollaborationHistory">
+									<Attribute Name="Thread01">
+										<Revision>
+											<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+											<AuthorName>Rainer</AuthorName>
+										</Revision>
+										<Value>Beschreibung</Value>
+										<Attribute Name="Message01">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>Sacht mal, wo ist die Beschreibung?</Value>
+											<Attribute Name="Category">
+												<Value>Question</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Offen</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>Rainer</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message02">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>Liegt unterm Tisch</Value>
+											<Attribute Name="Category">
+												<Value>Question</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Geschlossen</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>RobotStudio</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message2">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>sauladen hier</Value>
+											<Attribute Name="MessageCategory">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>Rainer</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message3">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>das ist ein tHREAD</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>RobotStudio</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message4">
+											<Revision>
+												<RevisionDate>2010-02-14T14:53:27.078125+01:00</RevisionDate>
+												<AuthorName>fehlt auch noch</AuthorName>
+											</Revision>
+											<Value>Rainer schrieb diese Message</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>fehlt noch</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message5">
+											<Revision>
+												<RevisionDate>2010-02-14T17:30:10.46875+01:00</RevisionDate>
+												<AuthorName>fehlt auch noch</AuthorName>
+											</Revision>
+											<Value>test</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>fehlt noch</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message6">
+											<Revision>
+												<RevisionDate>2010-02-14T17:34:28.796875+01:00</RevisionDate>
+												<AuthorName>fehlt auch noch</AuthorName>
+											</Revision>
+											<Value>Volker - das ist ein Fehler. Bitte lösen!</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>fehlt noch</Value>
+											</Attribute>
+										</Attribute>
+									</Attribute>
+									<Attribute Name="Thread02">
+										<Revision>
+											<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+											<AuthorName>Rainer</AuthorName>
+										</Revision>
+										<Value>Dokumentation</Value>
+										<Attribute Name="Message01">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>Sacht mal, wo ist die Doku?</Value>
+											<Attribute Name="Category">
+												<Value>Question</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Offen</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>RobotStudio</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message02">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>Auch unterm Tisch.</Value>
+											<Attribute Name="Category">
+												<Value>Question</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Geschlossen</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>RobotStudio</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message2">
+											<Revision>
+												<RevisionDate>2001-12-17T09:30:47.0Z</RevisionDate>
+												<AuthorName>Rainer</AuthorName>
+											</Revision>
+											<Value>Das ist eine Nachricht.</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>RobotStudio</Value>
+											</Attribute>
+										</Attribute>
+										<Attribute Name="Message3">
+											<Revision>
+												<RevisionDate>2010-02-14T17:31:34.890625+01:00</RevisionDate>
+												<AuthorName>fehlt auch noch</AuthorName>
+											</Revision>
+											<Value>noch ein Test</Value>
+											<Attribute Name="Category">
+												<Value>Comment</Value>
+											</Attribute>
+											<Attribute Name="Status">
+												<Value>Open</Value>
+											</Attribute>
+											<Attribute Name="To">
+												<Value>fehlt noch</Value>
+											</Attribute>
+										</Attribute>
+									</Attribute>
+								</Attribute>
+								<Attribute Name="Type" AttributeDataType="xs:string">
+									<Value>Digital</Value>
+								</Attribute>
+								<Attribute Name="Direction" AttributeDataType="xs:string">
+									<Value>Out</Value>
+								</Attribute>
+								<Attribute Name="BitCount" AttributeDataType="xs:uint" />
+								<Attribute Name="Orientation" AttributeDataType="xs:string" />
+								<Attribute Name="Unit" AttributeDataType="String" />
+								<Attribute Name="InvertPhysicalValue" AttributeDataType="BOOL" />
+								<Attribute Name="UnitMapping" AttributeDataType="String" />
+								<Attribute Name="Value" AttributeDataType="xs:bool">
+									<DefaultValue>false</DefaultValue>
+									<Value>false</Value>
+								</Attribute>
+								<Attribute Name="LogicalVariableName" />
+								<Attribute Name="HWAddress" />
+								<Attribute Name="VariableType">
+									<Description>entweder "Global" oder "Local"</Description>
+								</Attribute>
+							</ExternalInterface>
+							<RoleRequirements RefBaseRoleClassPath="part1@AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+						</InternalElement>
+						<RoleRequirements RefBaseRoleClassPath="part1@AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+					</InternalElement>
+					<RoleRequirements RefBaseRoleClassPath="part1@AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+				</InternalElement>
+				<RoleRequirements RefBaseRoleClassPath="part1@AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+			</InternalElement>
+			<RoleRequirements RefBaseRoleClassPath="part1@AutomationMLBaseRoleClassLib/AutomationMLBaseRole/Structure" />
+		</InternalElement>
+	</InstanceHierarchy>
+	<InterfaceClassLib Name="ABBInterfaceClassLib">
+		<InterfaceClass Name="Signals" ID="">
+			<InterfaceClass Name="GroupOutput" />
+		</InterfaceClass>
+	</InterfaceClassLib>
+	<RoleClassLib Name="AutomationMLMIRoleClassLib">
+		<RoleClass Name="ManufacturingEquipment">
+			<RoleClass Name="Robot" />
+		</RoleClass>
+	</RoleClassLib>
+	<SystemUnitClassLib Name="ABBComponentLibrary">
+		<SystemUnitClass Name="Manufacturing">
+			<SystemUnitClass Name="RobotSystem" />
+			<SystemUnitClass Name="ABBRobot" />
+		</SystemUnitClass>
+	</SystemUnitClassLib>
+</CAEXFile>
