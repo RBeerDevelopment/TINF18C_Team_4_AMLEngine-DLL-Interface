@@ -1,5 +1,5 @@
 # AMLEngineWrapper
-##### *Version 1.0.6*
+##### *Version 1.0.7*
 Wrapper for the [AMLEngine.dll](https://www.nuget.org/packages/Aml.Engine) for [Node.js](https://nodejs.org/)
 
 ````
@@ -77,7 +77,7 @@ This function appends a new instance hierarchy
 | Parameter | Description |
 |-----------|-------------|
 |path|The path to the AML file you want to use|
-|instanceName|The name of the instance you want to append|
+|index|The name of the instance you want to append|
 |internalElement|The internalElement you want to include in the instance hierarchy|
 |callback|The callback function that should handle the result of this function call.<br />If no callback is specified the result will be returned by using a return statement.<br />*See [How to handle the result of a function call](#how-to-handle-the-result-of-a-function-call) for more information.*<br />**Default value:** null|
 ##### Return value
@@ -155,35 +155,19 @@ This function appends a new instance element
 This function returns a confirmation message, letting you know whether the operation was successful
 <hr />
 
-### changeData
+### renameElement
 ````
-wrapper.changeData(path, index, data, callback = null);
+wrapper.renameElement(path, index, data, callback = null);
 ````
 ##### Description
-This function rewrites the content of a given element
+This function can be used to rename a given element
 ##### Parameters
 | Parameter | Description |
 |-----------|-------------|
 |path|The path to the AML file you want to use|
-|index|The index of the instanceElement you want to change|
-|data|The new data you want to enter|
-|callback|The callback function that should handle the result of this function call.<br />If no callback is specified the result will be returned by using a return statement.<br />*See [How to handle the result of a function call](#how-to-handle-the-result-of-a-function-call) for more information.*<br />**Default value:** null|
-##### Return value
-This function returns a confirmation message, letting you know whether the operation was successful
-<hr />
-
-### searchAndChangeContent
-````
-wrapper.searchAndChangeContent(path, searchWord, data, callback = null);
-````
-##### Description
-This function does the same as *changeData*, but instead of an actual index, it searches through the whole document and changes the data of a found element
-##### Parameters
-| Parameter | Description |
-|-----------|-------------|
-|path|The path to the AML file you want to use|
-|searchWord|The name of the element that should be searched for|
-|data|The new data you want to enter|
+|indexer|The index of the instanceHierarchy that contains the element|
+|newName|The new name for the element|
+|internalElement|The name of the element you want to rename|
 |callback|The callback function that should handle the result of this function call.<br />If no callback is specified the result will be returned by using a return statement.<br />*See [How to handle the result of a function call](#how-to-handle-the-result-of-a-function-call) for more information.*<br />**Default value:** null|
 ##### Return value
 This function returns a confirmation message, letting you know whether the operation was successful
