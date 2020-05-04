@@ -3,7 +3,7 @@ If there are any problems in this chapter, take a look at the [microsoft install
 It has basically the same content.
 ## Editor
 For compiling the c++ code with the microsoft compiler it is recommended downloading the Visual Studio Editor.
- The version Visual Studio Enterprise oder Visual studio Community can be used.
+ The version Visual Studio Enterprise or Visual studio Community can be used.
  The Community version can be downloaded for free under this link: https://visualstudio.microsoft.com/de/vs/community/  
  Follow the install instructions.
 
