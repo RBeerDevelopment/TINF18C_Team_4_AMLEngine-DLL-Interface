@@ -1,156 +1,129 @@
 ﻿using Aml.Engine.CAEX;
 using Aml.Engine.Services;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Text;
 
 namespace ConsoleApplication
 {
     public class Validator
     {
 
-        public int LogLevel { get; set; }
-
         private ConsoleColor default_foreground { get; set; }
 
-        public Validator(int logLevel)
+        public Validator()
         {
-            // ToDo: Decide if setting LogLevel per Function call or per Property
-            this.LogLevel = logLevel;
-
             //save default foreground color
             this.default_foreground = Console.ForegroundColor;
         }
 
-
-
-        public void validate(CAEXDocument doc, string path)
+        public void validate(CAEXDocument doc, string path, ref Options CurrentOptions)
         {
             // start validating aml
-
-            ValidatorService service = ValidatorService.Register();
-
-            var enumerator = service.ValidateAll(doc).GetEnumerator();
-            bool FileChanged = false;
-
-            while (enumerator.MoveNext())
+            try
             {
-                // option for printing all options
-                //printALLData_for_ValidationElement(enumerator.Current);
-                
-                // print Error
-                print_Error(enumerator.Current);
+                ValidatorService service = ValidatorService.Register();
 
-                // ToDo: Implement Option to automatically repair all
-                // try reparing
-                if (Console.ReadLine().ToUpper().Trim()=="YES")
+                var enumerator = service.ValidateAll(doc).GetEnumerator();
+                bool FileChanged = false;
+
+                while (enumerator.MoveNext())
                 {
-                    //start reparing
-                    FileChanged = true;
-                    service.Repair(enumerator.Current);
-                    println($"Repair results:  {enumerator.Current.RepairResult}", ConsoleColor.Cyan);
+                    if (CurrentOptions.PrintAllVal)
+                        printALLData_for_ValidationElement(enumerator.Current);
 
-                }
-            }
+                    // print Error
+                    print_Error(enumerator.Current);
 
-            // no Errors in mistake
-            if (enumerator.Current == null)
-            {
-                println("No errors found", ConsoleColor.Green);
-            }
-            else if (FileChanged)
-            {
-                
-                println("Override file (yes/no) ?", this.default_foreground);
+                    if (!CurrentOptions.AutoRepair)
+                        PrintHelper.println("Type yes to repair the error\n\n", ConsoleColor.Yellow);
 
-                // if override file
-                if (Console.ReadLine().ToUpper().Trim() == "YES")
-                {
-                    doc.SaveToFile(path, true);
-
-                    println($"saved to file {path}", ConsoleColor.Cyan);
-                }
-                else
-                {
-                    // save to new file
-                    Console.WriteLine("Please insert the Path for the File you want to save:");
-                    string new_path = @Console.ReadLine();
-                    // Only when User entered a valid Path
-                    if (!String.IsNullOrEmpty(new_path) && File.GetAttributes(new_path).HasFlag(FileAttributes.Directory) && Directory.Exists(new_path))
+                    // try reparing
+                    if (CurrentOptions.AutoRepair || "YES".StartsWith(Console.ReadLine().ToUpper().Trim()))
                     {
-                        doc.SaveToFile(new_path, true);
-                        println($"saved to file {new_path}", ConsoleColor.Cyan);
+                        // start reparing
+                        FileChanged = true;
+                        service.Repair(enumerator.Current);
+                        PrintHelper.println($"Repair results:  {enumerator.Current.RepairResult}\n\n", ConsoleColor.Cyan);
+
                     }
                 }
 
+                // no Errors in mistake
+                if (enumerator.Current == null)
+                {
+                    Console.WriteLine("\n\n");
+                    PrintHelper.println("No errors found\n\n", ConsoleColor.Green);
+                }
+                else if (FileChanged)
+                {
+
+                    PrintHelper.println("Override file ? (Yes/No)\n\n", this.default_foreground);
+
+                    // if override file
+                    if ("YES".StartsWith(Console.ReadLine().ToUpper().Trim()))
+                    {
+                        doc.SaveToFile(path, true);
+
+                        PrintHelper.println($"saved to file {path}\n\n", ConsoleColor.Cyan);
+                    }
+                    else
+                    {
+                        // save to new file
+                        PrintHelper.printCentredLine("Please insert the Path for the File you want to save:\n\n");
+                        string new_path = PrintHelper.GetDirectory();
+                        // Only when User entered a valid Path
+                        if (!String.IsNullOrEmpty(new_path))
+                        {
+                            PrintHelper.printCentredLine("What should be the Name of the Repaired AML-File?\n");
+                            string FileName = Path.Combine(new_path, Console.ReadLine());
+                            PrintHelper.printCentredLine("\n");
+                            while (File.Exists(@FileName))
+                            {
+                                PrintHelper.printCentredLine("File already exists in Directory. Please Choose another name.\n");
+                                FileName = Path.Combine(new_path, Console.ReadLine());
+                                PrintHelper.printCentredLine("\n");
+                            }
+                            doc.SaveToFile(FileName, true);
+                            PrintHelper.println($"saved to file {FileName}\n\n", ConsoleColor.Cyan);
+                        }
+                    }
+                }
+                ValidatorService.UnRegister();
             }
-            // @Lucas Wofür?
-            //// wait 3 seconds
-            //System.Threading.Thread.Sleep(3000);
-            ValidatorService.UnRegister();
+            catch(Exception e)
+            {
+                Console.WriteLine("Exception: " + e.ToString() + "\n\n");
+                PrintHelper.println("Couldn't Validate File\n\n", ConsoleColor.Red);
+            }
+            PrintHelper.Exit("Returning to Main Menu");
 
         }
-
 
         private void print_Error(ValidationElement validationElement)
         {
-            println("Found Error", ConsoleColor.Red);
+            Console.WriteLine("\n\n");
+            PrintHelper.println("Found Error\n\n", ConsoleColor.Red);
 
             if (!String.IsNullOrEmpty(validationElement.LongDescription))
             {
-                println($"{validationElement.LongDescription}", ConsoleColor.Yellow);
+                PrintHelper.println($"{validationElement.LongDescription}\n", ConsoleColor.Yellow);
             }
             else
             {
-                println($"Exception: {validationElement.ValidationInformation}", this.default_foreground);
+                PrintHelper.println($"Exception: {validationElement.ValidationInformation}", this.default_foreground);
             }
 
-            println($"Error with attribute \"{validationElement.ValidatedAttribute}\" ", this.default_foreground);
+            PrintHelper.println($"Error with attribute \"{validationElement.ValidatedAttribute}\" \n", this.default_foreground);
 
-            println($"Options for reparing \"{validationElement.AvailableRepairOptions}\" \n", ConsoleColor.Green);
+            PrintHelper.println($"Options for reparing \"{validationElement.AvailableRepairOptions}\" \n", ConsoleColor.Green);
 
-            println("Error in element:", this.default_foreground);
-            println($"{this.line()} \n{validationElement.Element}\n{this.line()} \n", ConsoleColor.Blue);
-
-            println("\nType yes for repairing option", ConsoleColor.Yellow);
+            PrintHelper.println("Error in element: \n", this.default_foreground);
+            PrintHelper.println($"{PrintHelper.line()} \n{validationElement.Element}\n{PrintHelper.line()} \n\n", ConsoleColor.Blue);
         }
-
-
-
-        private void Error(string message, int _logLevel)
-        {
-            /*
-             writes Error to console ??
-             */
-        }
-
-
-        private void println(string message, ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-
-            Console.WriteLine(message);
-
-            Console.ForegroundColor = this.default_foreground;
-        }
-
-
-        private string line()
-        {
-            var x = "";
-            for (int i = 0; i < 50; i++)
-            {
-                x += "_";
-            }
-
-
-            return x;
-        }
-
 
         private void printALLData_for_ValidationElement(ValidationElement validationElement)
         {
+            PrintHelper.println("\n\n Information for Current Element: ", ConsoleColor.Green);
             Console.WriteLine("descrition " + validationElement.LongDescription);
             Console.WriteLine("Element " + validationElement.Element);
             Console.WriteLine("ValidatedAttribute " + validationElement.ValidatedAttribute);
