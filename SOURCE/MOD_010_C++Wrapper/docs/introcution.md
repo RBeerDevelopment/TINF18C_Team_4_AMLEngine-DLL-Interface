@@ -18,9 +18,9 @@ At the last point, there is a glossary for common used terms in this project.
 
 - C++ Wrapper in the Microsoft World
     1. [Preparation](./c++%20wrapper/1_preparation.md)
-    1. [Add Sample Code](./c++%20wrapper/1_preparation.md)
-    1. [Compiling](./c++%20wrapper/1_preparation.md)
-    1. [Preparation](./c++%20wrapper/1_preparation.md)
+    1. [Install dependencies](./c++%20wrapper/2_download_aml_engine.md)
+    1. [Add sample code](./c++%20wrapper/3_add_sample_code.md)
+    1. [Compiling the code](./c++%20wrapper/4_compiling.md)
     
     [Common Compiler Errors](./c++%20wrapper/common_warnings.md)
 
