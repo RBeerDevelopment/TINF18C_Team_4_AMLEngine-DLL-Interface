@@ -43,8 +43,7 @@ If a function call fails an error will be thrown, detailing the reason for the e
 - [createSystemUnitClass](#createsystemunitclass)
 - [createInterfaceClass](#createinterfaceclass)
 - [appendInstanceElement](#appendinstanceelement)
-- [changeData](#changedata)
-- [searchAndChangeContent](#searchandchangecontent)
+- [renameElement](#renameElement)
 - [validate](#validate)
 - [repair](#repair)
 
