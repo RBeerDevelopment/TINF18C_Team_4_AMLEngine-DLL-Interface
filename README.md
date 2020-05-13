@@ -15,7 +15,7 @@
              70178 Stuttgart
 
 ## Goals of this project:
-This project aims to make the [AMLEngine](https://github.com/AutomationML/AMLEngine2.1) more accessible by providing a wrapper for JavaScript, instructions to use it in C++ and a console application, that lets the user directly control the AMLEngine console parameters.  
+This project aims to make the [AMLEngine](https://github.com/AutomationML/AMLEngine2.1) more accessible by providing a wrapper for JavaScript, instructions to use it in C++ and a console application, that lets the user directly control the AMLEngine console via parameters or UI.  
 
 ## Documentation:
 - [Home](https://github.com/RBeerDevelopment/TINF18C_Team_4_AMLEngine-DLL-Interface/wiki)
