@@ -16,7 +16,7 @@ At the last point, there is a glossary for common used terms in this project.
 
 # Project Structure
 
-- C++ Wrapper in the Microsoft World
+- C++ Wrapper in the **Microsoft World**
     1. [Preparation](./c++%20wrapper/1_preparation.md)
     1. [Install dependencies](./c++%20wrapper/2_download_aml_engine.md)
     1. [Add sample code](./c++%20wrapper/3_add_sample_code.md)
@@ -24,7 +24,7 @@ At the last point, there is a glossary for common used terms in this project.
     
     [Common Compiler Errors](./c++%20wrapper/common_warnings.md)
 
-- C++ Wrapper with GNU C++ Compiler
+- C++ Wrapper with **GNU C++ Compiler**
     - [Issues and findings when compiling with gcc](compiling_with_gcc.md)
     
 - [Glossary](glossary.md)
